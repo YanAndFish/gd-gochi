@@ -34,6 +34,15 @@ export const MEMBERSHIP_FEE_CENTS = 68_800;
 /** 一年会籍采用固定 365 天周期。 */
 export const MEMBERSHIP_TERM_DAYS = 365;
 
+/**
+ * 把 public 目录资源转换为兼容本地根路径和 GitHub Pages 子路径的地址。
+ * @param {string} path - 相对于 public 目录的资源路径。
+ * @returns {string} 带当前 Vite 基路径的资源地址。
+ */
+export function publicAssetUrl(path) {
+  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+}
+
 /** 等级排序用于统一比较购买资格。 */
 export const TIER_RANK = Object.freeze({
   none: 0,
@@ -70,10 +79,10 @@ export const PRODUCT_VARIANTS = Object.freeze([
     priceCents: 1_880_000,
     purchaseLimit: null,
     colorHex: "#d9d2bf",
-    heroImage: "/assets/products/stool-ivory-three-quarter.png",
+    heroImage: publicAssetUrl("assets/products/stool-ivory-three-quarter.png"),
     gallery: [
-      "/assets/products/stool-ivory-three-quarter.png",
-      "/assets/products/stool-ivory-side.png",
+      publicAssetUrl("assets/products/stool-ivory-three-quarter.png"),
+      publicAssetUrl("assets/products/stool-ivory-side.png"),
     ],
     editionNote: "2026 常设系列",
     description:
@@ -91,10 +100,10 @@ export const PRODUCT_VARIANTS = Object.freeze([
     priceCents: 1_880_000,
     purchaseLimit: null,
     colorHex: "#8f918f",
-    heroImage: "/assets/products/stool-grey-three-quarter.png",
+    heroImage: publicAssetUrl("assets/products/stool-grey-three-quarter.png"),
     gallery: [
-      "/assets/products/stool-grey-three-quarter.png",
-      "/assets/products/stool-grey-front.png",
+      publicAssetUrl("assets/products/stool-grey-three-quarter.png"),
+      publicAssetUrl("assets/products/stool-grey-front.png"),
     ],
     editionNote: "2026 常设系列",
     description:
@@ -112,12 +121,12 @@ export const PRODUCT_VARIANTS = Object.freeze([
     priceCents: 3_880_000,
     purchaseLimit: 1,
     colorHex: "#df151b",
-    heroImage: "/assets/products/stool-red-three-quarter.png",
+    heroImage: publicAssetUrl("assets/products/stool-red-three-quarter.png"),
     gallery: [
-      "/assets/products/stool-red-three-quarter.png",
-      "/assets/products/stool-red-front.png",
-      "/assets/products/stool-red-side.png",
-      "/assets/products/stool-red-top-detail.png",
+      publicAssetUrl("assets/products/stool-red-three-quarter.png"),
+      publicAssetUrl("assets/products/stool-red-front.png"),
+      publicAssetUrl("assets/products/stool-red-side.png"),
+      publicAssetUrl("assets/products/stool-red-top-detail.png"),
     ],
     editionNote: "2026 限定编号 · 每位会员限购一件",
     description:
@@ -135,12 +144,12 @@ export const PRODUCT_VARIANTS = Object.freeze([
     priceCents: 12_800_000,
     purchaseLimit: 1,
     colorHex: "#b9a992",
-    heroImage: "/assets/products/archive-set.png",
+    heroImage: publicAssetUrl("assets/products/archive-set.png"),
     gallery: [
-      "/assets/products/archive-set.png",
-      "/assets/brand/stool-tricolor-installation.png",
-      "/assets/products/stool-red-front.png",
-      "/assets/editorial/milano-standing-red.png",
+      publicAssetUrl("assets/products/archive-set.png"),
+      publicAssetUrl("assets/brand/stool-tricolor-installation.png"),
+      publicAssetUrl("assets/products/stool-red-front.png"),
+      publicAssetUrl("assets/editorial/milano-standing-red.png"),
     ],
     editionNote: "档案编号 · 每位会员限购一套",
     description:

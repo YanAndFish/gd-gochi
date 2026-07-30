@@ -35,6 +35,7 @@ import {
   PRODUCT_VARIANTS,
   formatCny,
   getVariant,
+  publicAssetUrl,
 } from "./catalog.js";
 import {
   getTierLabel,
@@ -347,7 +348,7 @@ function HomePage() {
       <section className="home-hero" aria-labelledby="home-hero-title">
         <img
           className="home-hero-image"
-          src="/assets/brand/home-hero-gallery.png"
+          src={publicAssetUrl("assets/brand/home-hero-gallery.png")}
           alt="白色美术馆中陈列一件岭南朱粤凳 01"
         />
         <div className="home-hero-copy">
@@ -410,7 +411,7 @@ function HomePage() {
           </Link>
         </div>
         <img
-          src="/assets/editorial/milano-standing-red.png"
+          src={publicAssetUrl("assets/editorial/milano-standing-red.png")}
           alt="虚构成年米兰时装模特与岭南朱粤凳 01 的造型展示"
         />
         <p className="ai-caption">品牌 AI 概念影像</p>
@@ -418,7 +419,7 @@ function HomePage() {
 
       <section className="maison-story section-pad" id="maison">
         <img
-          src="/assets/brand/stool-tricolor-installation.png"
+          src={publicAssetUrl("assets/brand/stool-tricolor-installation.png")}
           alt="岭南朱、瓷象牙和骑楼灰三色粤凳 01 美术馆装置"
         />
         <div>
@@ -472,9 +473,9 @@ function ProductPage() {
   const availability = getAvailability(variant.id);
   const modelImage =
     variant.id === "stool-red" || variant.id === "archive-set"
-      ? "/assets/editorial/milano-standing-red.png"
+      ? publicAssetUrl("assets/editorial/milano-standing-red.png")
       : variant.id === "stool-ivory"
-        ? "/assets/editorial/milano-seated-ivory.png"
+        ? publicAssetUrl("assets/editorial/milano-seated-ivory.png")
         : null;
   const gallery = [
     ...new Set([...variant.gallery, ...(modelImage ? [modelImage] : [])]),
