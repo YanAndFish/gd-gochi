@@ -6,8 +6,9 @@ import {
 } from "./catalog.js";
 import {
   createMembershipTermEnd,
-  hasRequiredTier,
+  evaluatePurchaseEligibility,
   isMembershipActive,
+  isPositiveInteger,
   resolveShipmentStage,
   resolveTier,
 } from "./commerce-rules.js";
@@ -98,6 +99,24 @@ export const SHIPMENT_MILESTONES = Object.freeze([
  */
 
 /**
+ * 不可变订单商品快照。
+ * @typedef {Object} OrderItemSnapshot
+ * @property {string} variantId - 成交变体标识。
+ * @property {string} productId - 成交商品标识。
+ * @property {string} [seriesId] - 成交系列标识；旧订单可能不存在。
+ * @property {string} [productSlug] - 成交商品路径；旧订单可能不存在。
+ * @property {string} nameZh - 成交时中文名称。
+ * @property {string} nameEn - 成交时英文名称。
+ * @property {string} shortName - 成交时短名称。
+ * @property {string} productClass - 成交时商品分类。
+ * @property {number} priceCents - 成交单价，单位为分。
+ * @property {number} quantity - 成交数量。
+ * @property {string} image - 成交时可直接显示的图片地址。
+ * @property {string} [imageAsset] - public 下无部署前缀的图片资源键。
+ * @property {string} editionNote - 成交时版本说明。
+ */
+
+/**
  * 虚拟支付记录。
  * @typedef {Object} PaymentRecord
  * @property {string} id - 支付唯一标识。
@@ -118,7 +137,7 @@ export const SHIPMENT_MILESTONES = Object.freeze([
  * @property {string} orderNo - 面向用户的订单编号。
  * @property {string} browserId - 浏览器身份唯一标识。
  * @property {"confirmed"} status - 订单状态。
- * @property {Array<Object>} items - 成交时的商品名称、价格、数量与图片快照。
+ * @property {OrderItemSnapshot[]} items - 成交时的商品名称、价格、数量与图片快照。
  * @property {number} subtotalCents - 商品小计，单位为分。
  * @property {number} shippingCents - 配送费，单位为分。
  * @property {number} totalCents - 订单总额，单位为分。
@@ -194,6 +213,139 @@ function createId() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random()
     .toString(36)
     .slice(2)}`;
+}
+
+/** 未知购物袋行使用的中性占位图。 */
+const UNAVAILABLE_ITEM_IMAGE =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='800' viewBox='0 0 640 800'%3E%3Crect width='640' height='800' fill='%23eeeae3'/%3E%3Cpath d='M224 400h192M320 304v192' stroke='%23918c84' stroke-width='2'/%3E%3C/svg%3E";
+
+/**
+ * 创建未知购物袋行的安全展示占位变体。
+ * @param {string} variantId - IndexedDB 中保留的原始变体标识。
+ * @returns {import("./catalog.js").ProductVariant} 不参与计价的占位变体。
+ */
+function createUnavailableCartVariant(variantId) {
+  return {
+    id: variantId,
+    productId: "",
+    seriesId: "",
+    slug: "",
+    nameZh: "商品已下架",
+    nameEn: "ITEM UNAVAILABLE",
+    shortName: "暂时缺货",
+    option: {
+      type: "status",
+      value: "retired",
+      label: "暂时缺货",
+      colorHex: "#d8d4cd",
+    },
+    productClass: "standard",
+    saleStatus: "retired",
+    requiredTier: "edition",
+    purchaseLimit: null,
+    maxPerOrder: 1,
+    priceCents: 0,
+    colorHex: "#d8d4cd",
+    heroImage: UNAVAILABLE_ITEM_IMAGE,
+    gallery: [],
+    editionNote: "作品状态",
+    description: "这件作品目前无法继续选购。",
+    media: {
+      hero: {
+        assetKey: "",
+        src: UNAVAILABLE_ITEM_IMAGE,
+        alt: "已下架商品占位图",
+        caption: "暂时缺货",
+        role: "studio",
+        aiConcept: false,
+        width: 640,
+        height: 800,
+      },
+      gallery: [],
+    },
+    purchasePolicy: {
+      requiredTier: "edition",
+      ineligiblePresentation: "unavailable",
+      maxPerOrder: 1,
+      lifetimeLimit: null,
+    },
+  };
+}
+
+/**
+ * 将购物袋原始行与当前代码目录合并，同时保留未知和已下架行。
+ * @param {CartItemRecord} row - IndexedDB 原始购物袋行。
+ * @returns {CartItemRecord & {variant: Object, catalogStatus: string, unavailable: boolean}}
+ * 可供界面安全展示的购物袋行。
+ */
+export function mergeCartItemWithCatalog(row) {
+  const catalogVariant = getVariant(row.variantId);
+  const catalogStatus = catalogVariant?.saleStatus ?? "missing";
+  return {
+    ...row,
+    variant: catalogVariant ?? createUnavailableCartVariant(row.variantId),
+    catalogStatus,
+    unavailable: catalogStatus !== "active",
+  };
+}
+
+/**
+ * 从历史订单快照解析商品标识，兼容未保存 productId 的更早记录。
+ * @param {Object} item - 历史订单商品快照。
+ * @returns {string | null} 商品标识。
+ */
+function resolveOrderItemProductId(item) {
+  return item.productId ?? getVariant(item.variantId)?.productId ?? null;
+}
+
+/**
+ * 汇总历史订单在变体和商品两个作用域内的成交数量。
+ * @param {OrderRecord[]} orders - 当前身份历史订单。
+ * @returns {{variants: Map<string, number>, products: Map<string, number>}} 数量索引。
+ */
+function summarizePurchasedQuantities(orders) {
+  const variants = new Map();
+  const products = new Map();
+
+  orders.forEach((order) => {
+    (order.items ?? []).forEach((item) => {
+      variants.set(
+        item.variantId,
+        (variants.get(item.variantId) ?? 0) + item.quantity,
+      );
+      const productId = resolveOrderItemProductId(item);
+      if (productId) {
+        products.set(
+          productId,
+          (products.get(productId) ?? 0) + item.quantity,
+        );
+      }
+    });
+  });
+
+  return { variants, products };
+}
+
+/**
+ * 计算当前购物袋中同一商品的总数量。
+ * @param {CartItemRecord[]} rows - 购物袋原始行。
+ * @param {string} productId - 商品标识。
+ * @returns {number} 同一商品在购物袋中的总数量。
+ */
+function countCartProductQuantity(rows, productId) {
+  return rows.reduce((total, row) => {
+    const rowVariant = getVariant(row.variantId);
+    return rowVariant?.productId === productId ? total + row.quantity : total;
+  }, 0);
+}
+
+/**
+ * 将统一资格结果转换为交易错误。
+ * @param {import("./commerce-rules.js").PurchaseEligibility} eligibility - 资格结果。
+ * @returns {never}
+ */
+function throwEligibilityError(eligibility) {
+  throw new CommerceError(eligibility.errorCode ?? "UNAVAILABLE");
 }
 
 /**
@@ -445,14 +597,17 @@ export async function addCartItem(
   now = new Date(),
 ) {
   const variant = getVariant(variantId);
-  if (!variant || quantity < 1) {
+  if (!variant || !isPositiveInteger(quantity)) {
     throw new CommerceError("INVALID_CART_ITEM");
   }
 
   return database.transaction(
     "rw",
+    database.memberships,
+    database.memberLedger,
     database.carts,
     database.cartItems,
+    database.orders,
     async () => {
       const nowIso = now.toISOString();
       const cart = await database.carts.get(browserId);
@@ -460,11 +615,41 @@ export async function addCartItem(
         throw new CommerceError("IDENTITY_MISSING");
       }
       const existing = await database.cartItems.get([browserId, variantId]);
-      const maxQuantity = variant.purchaseLimit ?? 4;
-      const nextQuantity = Math.min(
-        maxQuantity,
-        (existing?.quantity ?? 0) + quantity,
+      const cartItems = await database.cartItems
+        .where("browserId")
+        .equals(browserId)
+        .toArray();
+      const priorOrders = await database.orders
+        .where("browserId")
+        .equals(browserId)
+        .toArray();
+      const membership = await refreshMembershipInTransaction(
+        database,
+        browserId,
+        now,
       );
+      const purchased = summarizePurchasedQuantities(priorOrders);
+      const nextQuantity = (existing?.quantity ?? 0) + quantity;
+      const currentProductQuantity = countCartProductQuantity(
+        cartItems,
+        variant.productId,
+      );
+      const scopeOrderQuantity =
+        variant.purchasePolicy?.lifetimeLimit?.scope === "product"
+          ? currentProductQuantity + quantity
+          : nextQuantity;
+      const eligibility = evaluatePurchaseEligibility(variant, membership, {
+        now,
+        requestedQuantity: nextQuantity,
+        scopeOrderQuantity,
+        purchasedVariantQuantity: purchased.variants.get(variant.id) ?? 0,
+        purchasedProductQuantity:
+          purchased.products.get(variant.productId) ?? 0,
+      });
+      if (!eligibility.eligible) {
+        throwEligibilityError(eligibility);
+      }
+
       await database.cartItems.put({
         browserId,
         variantId,
@@ -499,24 +684,65 @@ export async function setCartItemQuantity(
   quantity,
   now = new Date(),
 ) {
+  if (
+    !Number.isInteger(quantity) ||
+    !Number.isFinite(quantity) ||
+    quantity < 0
+  ) {
+    throw new CommerceError("INVALID_CART_ITEM");
+  }
+
   return database.transaction(
     "rw",
+    database.memberships,
+    database.memberLedger,
     database.carts,
     database.cartItems,
+    database.orders,
     async () => {
       const cart = await database.carts.get(browserId);
       const existing = await database.cartItems.get([browserId, variantId]);
       if (!cart || !existing) {
         throw new CommerceError("INVALID_CART_ITEM");
       }
-      const variant = getVariant(variantId);
-      const maxQuantity = variant?.purchaseLimit ?? 4;
-      if (quantity <= 0) {
+      if (quantity === 0) {
         await database.cartItems.delete([browserId, variantId]);
       } else {
+        const variant = getVariant(variantId);
+        if (!variant) {
+          throw new CommerceError("UNAVAILABLE");
+        }
+        const [cartItems, priorOrders, membership] = await Promise.all([
+          database.cartItems
+            .where("browserId")
+            .equals(browserId)
+            .toArray(),
+          database.orders.where("browserId").equals(browserId).toArray(),
+          refreshMembershipInTransaction(database, browserId, now),
+        ]);
+        const purchased = summarizePurchasedQuantities(priorOrders);
+        const currentProductQuantity = countCartProductQuantity(
+          cartItems,
+          variant.productId,
+        );
+        const scopeOrderQuantity =
+          variant.purchasePolicy?.lifetimeLimit?.scope === "product"
+            ? currentProductQuantity - existing.quantity + quantity
+            : quantity;
+        const eligibility = evaluatePurchaseEligibility(variant, membership, {
+          now,
+          requestedQuantity: quantity,
+          scopeOrderQuantity,
+          purchasedVariantQuantity: purchased.variants.get(variant.id) ?? 0,
+          purchasedProductQuantity:
+            purchased.products.get(variant.productId) ?? 0,
+        });
+        if (!eligibility.eligible) {
+          throwEligibilityError(eligibility);
+        }
         await database.cartItems.put({
           ...existing,
-          quantity: Math.min(maxQuantity, quantity),
+          quantity,
           updatedAt: now.toISOString(),
         });
       }
@@ -566,14 +792,19 @@ export function createShipmentEvents(paidAt) {
  */
 export async function countPurchasedVariant(database, browserId, variantId) {
   const orders = await database.orders.where("browserId").equals(browserId).toArray();
-  return orders.reduce(
-    (total, order) =>
-      total +
-      order.items
-        .filter((item) => item.variantId === variantId)
-        .reduce((sum, item) => sum + item.quantity, 0),
-    0,
-  );
+  return summarizePurchasedQuantities(orders).variants.get(variantId) ?? 0;
+}
+
+/**
+ * 统计指定身份历史订单中的某商品数量。
+ * @param {Dexie} database - Dexie 数据库实例。
+ * @param {string} browserId - 浏览器身份标识。
+ * @param {string} productId - 商品标识。
+ * @returns {Promise<number>} 已成交数量。
+ */
+export async function countPurchasedProduct(database, browserId, productId) {
+  const orders = await database.orders.where("browserId").equals(browserId).toArray();
+  return summarizePurchasedQuantities(orders).products.get(productId) ?? 0;
 }
 
 /**
@@ -633,11 +864,22 @@ export async function checkoutCart(
         browserId,
         now,
       );
-      const active = isMembershipActive(membership, now);
       const priorOrders = await database.orders
         .where("browserId")
         .equals(browserId)
         .toArray();
+      const purchased = summarizePurchasedQuantities(priorOrders);
+      const cartProductQuantities = new Map();
+      cartItems.forEach((cartItem) => {
+        const variant = getVariant(cartItem.variantId);
+        if (variant) {
+          cartProductQuantities.set(
+            variant.productId,
+            (cartProductQuantities.get(variant.productId) ?? 0) +
+              cartItem.quantity,
+          );
+        }
+      });
       const snapshots = [];
 
       for (const cartItem of cartItems) {
@@ -645,32 +887,27 @@ export async function checkoutCart(
         if (!variant) {
           throw new CommerceError("UNAVAILABLE");
         }
-        const advanced =
-          variant.productClass === "limited" ||
-          variant.productClass === "archive";
-        if (!active) {
-          throw new CommerceError(advanced ? "UNAVAILABLE" : "MEMBERSHIP_REQUIRED");
+        const scopeOrderQuantity =
+          variant.purchasePolicy?.lifetimeLimit?.scope === "product"
+            ? cartProductQuantities.get(variant.productId) ?? cartItem.quantity
+            : cartItem.quantity;
+        const eligibility = evaluatePurchaseEligibility(variant, membership, {
+          now,
+          requestedQuantity: cartItem.quantity,
+          scopeOrderQuantity,
+          purchasedVariantQuantity: purchased.variants.get(variant.id) ?? 0,
+          purchasedProductQuantity:
+            purchased.products.get(variant.productId) ?? 0,
+        });
+        if (!eligibility.eligible) {
+          throwEligibilityError(eligibility);
         }
-        if (!hasRequiredTier(membership.tier, variant.requiredTier)) {
-          throw new CommerceError("UNAVAILABLE");
-        }
-        const purchasedQuantity = priorOrders.reduce(
-          (total, order) =>
-            total +
-            order.items
-              .filter((item) => item.variantId === variant.id)
-              .reduce((sum, item) => sum + item.quantity, 0),
-          0,
-        );
-        if (
-          variant.purchaseLimit !== null &&
-          purchasedQuantity + cartItem.quantity > variant.purchaseLimit
-        ) {
-          throw new CommerceError("UNAVAILABLE");
-        }
+        const imageAsset = variant.media?.hero?.assetKey;
         snapshots.push({
           variantId: variant.id,
           productId: variant.productId,
+          ...(variant.seriesId ? { seriesId: variant.seriesId } : {}),
+          ...(variant.slug ? { productSlug: variant.slug } : {}),
           nameZh: variant.nameZh,
           nameEn: variant.nameEn,
           shortName: variant.shortName,
@@ -678,6 +915,7 @@ export async function checkoutCart(
           priceCents: variant.priceCents,
           quantity: cartItem.quantity,
           image: variant.heroImage,
+          ...(imageAsset ? { imageAsset } : {}),
           editionNote: variant.editionNote,
         });
       }
@@ -815,17 +1053,15 @@ export async function readCartSnapshot(database, browserId) {
     database.carts.get(browserId),
     database.cartItems.where("browserId").equals(browserId).toArray(),
   ]);
-  const items = rows
-    .map((row) => {
-      const variant = getVariant(row.variantId);
-      return variant ? { ...row, variant } : null;
-    })
-    .filter(Boolean);
+  const items = rows.map(mergeCartItemWithCatalog);
   return {
     cart,
     items,
     subtotalCents: items.reduce(
-      (sum, item) => sum + item.variant.priceCents * item.quantity,
+      (sum, item) =>
+        item.unavailable || !isPositiveInteger(item.quantity)
+          ? sum
+          : sum + item.variant.priceCents * item.quantity,
       0,
     ),
   };

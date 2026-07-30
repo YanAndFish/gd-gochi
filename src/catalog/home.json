@@ -1,0 +1,49 @@
+{
+  "hero": {
+    "productId": "guangdong-stool-01",
+    "variantId": "stool-red",
+    "media": {
+      "assetKey": "assets/brand/home-hero-gallery.png",
+      "alt": "白色美术馆中陈列一件岭南朱粤凳 01",
+      "caption": "粤凳 01 · 白色展馆",
+      "role": "installation",
+      "aiConcept": true,
+      "width": 2048,
+      "height": 1152
+    }
+  },
+  "editorials": [
+    {
+      "id": "milano-red-styling",
+      "productId": "guangdong-stool-01",
+      "variantId": "stool-red",
+      "media": {
+        "assetKey": "assets/editorial/milano-standing-red.png",
+        "alt": "虚构成年米兰时装模特与岭南朱粤凳 01 的造型展示",
+        "caption": "品牌 AI 概念影像 · 米兰造型",
+        "role": "editorial-ai",
+        "aiConcept": true,
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "id": "three-colour-installation",
+      "productId": "guangdong-stool-archive-01",
+      "variantId": "archive-set",
+      "media": {
+        "assetKey": "assets/brand/stool-tricolor-installation.png",
+        "alt": "岭南朱、瓷象牙和骑楼灰三色粤凳 01 美术馆装置",
+        "caption": "品牌 AI 概念影像 · 三色展馆装置",
+        "role": "installation",
+        "aiConcept": true,
+        "width": 2048,
+        "height": 1152
+      }
+    }
+  ],
+  "featuredProductIds": [
+    "guangdong-stool-01"
+  ],
+  "archiveProductId": "guangdong-stool-archive-01"
+}

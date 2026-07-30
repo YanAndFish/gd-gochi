@@ -1,16 +1,18 @@
 import "fake-indexeddb/auto";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getVariant } from "./catalog.js";
+import { TIER_THRESHOLDS, getVariant } from "./catalog.js";
 import {
   SHIPMENT_MILESTONES,
   activateMembership,
   addCartItem,
   checkoutCart,
+  countPurchasedProduct,
   createCommerceDatabase,
   initializeBrowserIdentity,
   readCartSnapshot,
   reconcileShipment,
   refreshMembership,
+  setCartItemQuantity,
 } from "./db.js";
 
 /** 所有时间敏感用例共享的会籍起点。 */
@@ -315,50 +317,339 @@ describe("商品结账事务", () => {
     const database = createTestDatabase("order-snapshot");
     const { browserId } = await createActiveMember(database);
     const variant = getVariant("stool-grey");
-    const originalCatalogFields = {
-      nameZh: variant.nameZh,
-      priceCents: variant.priceCents,
-      heroImage: variant.heroImage,
-    };
     const result = await checkoutStandardVariant(
       database,
       browserId,
       new Date("2026-01-02T00:00:00.000Z"),
     );
 
-    try {
-      Object.assign(variant, {
-        nameZh: "已变更的目录名称",
-        priceCents: 123,
-        heroImage: "/assets/products/changed.png",
-      });
-      await addCartItem(
+    await addCartItem(
+      database,
+      browserId,
+      variant.id,
+      2,
+      new Date("2026-01-03T00:00:00.000Z"),
+    );
+
+    const [storedOrder, currentCart] = await Promise.all([
+      database.orders.get(result.order.id),
+      readCartSnapshot(database, browserId),
+    ]);
+    expect(currentCart).toMatchObject({
+      subtotalCents: variant.priceCents * 2,
+    });
+    expect(storedOrder.items[0]).toMatchObject({
+      variantId: variant.id,
+      productId: variant.productId,
+      seriesId: variant.seriesId,
+      productSlug: variant.slug,
+      nameZh: variant.nameZh,
+      priceCents: variant.priceCents,
+      image: variant.heroImage,
+      imageAsset: variant.media.hero.assetKey,
+      quantity: 1,
+    });
+    expect(storedOrder.subtotalCents).toBe(variant.priceCents);
+  });
+
+  it("两个正式商品可混合结账并分别保存规范目录快照", async () => {
+    const database = createTestDatabase("mixed-products");
+    const { browserId } = await createActiveMember(database);
+    const stool = getVariant("stool-grey");
+    const archive = getVariant("archive-set");
+
+    await database.memberships.update(browserId, {
+      tier: "patron",
+      qualifyingSpendCents: TIER_THRESHOLDS.patron,
+    });
+    await addCartItem(
+      database,
+      browserId,
+      stool.id,
+      1,
+      new Date("2026-01-02T00:00:00.000Z"),
+    );
+    const cart = await addCartItem(
+      database,
+      browserId,
+      archive.id,
+      1,
+      new Date("2026-01-02T00:00:01.000Z"),
+    );
+
+    const result = await checkoutCart(database, browserId, {
+      expectedRevision: cart.revision,
+      idempotencyKey: "checkout:mixed-products",
+      method: "unionpay",
+      now: new Date("2026-01-02T00:00:02.000Z"),
+    });
+    const itemsByVariant = Object.fromEntries(
+      result.order.items.map((item) => [item.variantId, item]),
+    );
+
+    expect(new Set(result.order.items.map((item) => item.productId))).toEqual(
+      new Set(["guangdong-stool-01", "guangdong-stool-archive-01"]),
+    );
+    expect(itemsByVariant[stool.id]).toMatchObject({
+      productId: stool.productId,
+      productSlug: "guangdong-stool-01",
+      seriesId: stool.seriesId,
+      imageAsset: stool.media.hero.assetKey,
+      quantity: 1,
+    });
+    expect(itemsByVariant[archive.id]).toMatchObject({
+      productId: archive.productId,
+      productSlug: "guangdong-stool-archive-01",
+      seriesId: archive.seriesId,
+      imageAsset: archive.media.hero.assetKey,
+      quantity: 1,
+    });
+    expect(result.order.subtotalCents).toBe(
+      stool.priceCents + archive.priceCents,
+    );
+    await expect(
+      database.cartItems.where("browserId").equals(browserId).count(),
+    ).resolves.toBe(0);
+  });
+
+  it("同一订单产生的消费升级不能解锁订单内原本无资格的限定款", async () => {
+    const database = createTestDatabase("same-order-tier");
+    const { browserId } = await createActiveMember(database);
+    const injectedAt = "2026-01-02T00:00:00.000Z";
+
+    await database.transaction(
+      "rw",
+      database.carts,
+      database.cartItems,
+      async () => {
+        await database.cartItems.bulkPut([
+          {
+            browserId,
+            variantId: "stool-grey",
+            quantity: 4,
+            addedAt: injectedAt,
+            updatedAt: injectedAt,
+          },
+          {
+            browserId,
+            variantId: "stool-red",
+            quantity: 1,
+            addedAt: injectedAt,
+            updatedAt: injectedAt,
+          },
+        ]);
+        await database.carts.update(browserId, {
+          revision: 1,
+          updatedAt: injectedAt,
+        });
+      },
+    );
+
+    await expect(
+      checkoutCart(database, browserId, {
+        expectedRevision: 1,
+        idempotencyKey: "checkout:same-order-tier",
+        method: "concierge",
+        now: new Date("2026-01-02T00:00:01.000Z"),
+      }),
+    ).rejects.toMatchObject({ code: "UNAVAILABLE" });
+    await expect(database.orders.count()).resolves.toBe(0);
+    await expect(database.memberships.get(browserId)).resolves.toMatchObject({
+      tier: "edition",
+      qualifyingSpendCents: 0,
+    });
+  });
+
+  it("终身限购按历史订单拒绝第二次购买同一限定变体", async () => {
+    const database = createTestDatabase("variant-lifetime-limit");
+    const { browserId } = await createActiveMember(database);
+
+    await addCartItem(
+      database,
+      browserId,
+      "stool-grey",
+      4,
+      new Date("2026-01-02T00:00:00.000Z"),
+    );
+    const upgradeCart = await database.carts.get(browserId);
+    await checkoutCart(database, browserId, {
+      expectedRevision: upgradeCart.revision,
+      idempotencyKey: "checkout:upgrade-collector",
+      method: "unionpay",
+      now: new Date("2026-01-02T00:00:01.000Z"),
+    });
+    await expect(database.memberships.get(browserId)).resolves.toMatchObject({
+      tier: "collector",
+    });
+
+    const limitedCart = await addCartItem(
+      database,
+      browserId,
+      "stool-red",
+      1,
+      new Date("2026-01-03T00:00:00.000Z"),
+    );
+    await checkoutCart(database, browserId, {
+      expectedRevision: limitedCart.revision,
+      idempotencyKey: "checkout:first-red",
+      method: "unionpay",
+      now: new Date("2026-01-03T00:00:01.000Z"),
+    });
+
+    await expect(
+      addCartItem(
         database,
         browserId,
-        variant.id,
-        2,
-        new Date("2026-01-03T00:00:00.000Z"),
-      );
-
-      const [storedOrder, currentCart] = await Promise.all([
-        database.orders.get(result.order.id),
-        readCartSnapshot(database, browserId),
-      ]);
-      expect(currentCart.subtotalCents).toBe(246);
-      expect(storedOrder.items[0]).toMatchObject({
-        variantId: variant.id,
-        nameZh: originalCatalogFields.nameZh,
-        priceCents: originalCatalogFields.priceCents,
-        image: originalCatalogFields.heroImage,
-        quantity: 1,
-      });
-      expect(storedOrder.subtotalCents).toBe(
-        originalCatalogFields.priceCents,
-      );
-    } finally {
-      Object.assign(variant, originalCatalogFields);
-    }
+        "stool-red",
+        1,
+        new Date("2026-01-04T00:00:00.000Z"),
+      ),
+    ).rejects.toMatchObject({ code: "UNAVAILABLE" });
   });
+
+  it("旧订单缺少新增快照字段时仍可按 productId 汇总商品购买数量", async () => {
+    const database = createTestDatabase("legacy-order");
+    const { browserId } = await createActiveMember(database);
+    const nowIso = "2026-01-02T00:00:00.000Z";
+
+    await database.orders.add({
+      id: "legacy-order",
+      checkoutKey: "legacy-checkout",
+      orderNo: "LE20260102-LEGACY",
+      browserId,
+      status: "confirmed",
+      items: [
+        {
+          variantId: "stool-grey",
+          productId: "guangdong-stool-01",
+          nameZh: "旧版骑楼灰",
+          nameEn: "LEGACY ARCADE GREY",
+          shortName: "骑楼灰",
+          productClass: "standard",
+          priceCents: 1_880_000,
+          quantity: 2,
+          image: "/assets/products/stool-grey-three-quarter.png",
+          editionNote: "旧订单",
+        },
+      ],
+      subtotalCents: 3_760_000,
+      shippingCents: 0,
+      totalCents: 3_760_000,
+      tierBefore: "edition",
+      tierAfter: "edition",
+      delivery: {},
+      createdAt: nowIso,
+    });
+
+    await expect(
+      countPurchasedProduct(database, browserId, "guangdong-stool-01"),
+    ).resolves.toBe(2);
+  });
+});
+
+describe("购物袋输入与目录兼容", () => {
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, -1, 0, 1.5])(
+    "加入购物袋拒绝非法数量 %s",
+    async (quantity) => {
+      const database = createTestDatabase(`invalid-add-${String(quantity)}`);
+      const { browserId } = await createActiveMember(database);
+
+      await expect(
+        addCartItem(database, browserId, "stool-grey", quantity),
+      ).rejects.toMatchObject({ code: "INVALID_CART_ITEM" });
+    },
+  );
+
+  it("超过显式每单上限时拒绝而不静默截断", async () => {
+    const database = createTestDatabase("max-per-order");
+    const { browserId } = await createActiveMember(database);
+
+    await expect(
+      addCartItem(database, browserId, "stool-grey", 5),
+    ).rejects.toMatchObject({ code: "UNAVAILABLE" });
+    await expect(
+      database.cartItems.where("browserId").equals(browserId).count(),
+    ).resolves.toBe(0);
+  });
+
+  it("设置数量只允许零删除或正整数，未知行也能用原始 variantId 删除", async () => {
+    const database = createTestDatabase("unknown-cart-row");
+    const { browserId } = await createActiveMember(database);
+    const nowIso = "2026-01-02T00:00:00.000Z";
+
+    await database.cartItems.put({
+      browserId,
+      variantId: "retired-unknown-variant",
+      quantity: 2,
+      addedAt: nowIso,
+      updatedAt: nowIso,
+    });
+    await database.carts.update(browserId, {
+      revision: 1,
+      updatedAt: nowIso,
+    });
+
+    const snapshot = await readCartSnapshot(database, browserId);
+    expect(snapshot.subtotalCents).toBe(0);
+    expect(snapshot.items).toHaveLength(1);
+    expect(snapshot.items[0]).toMatchObject({
+      variantId: "retired-unknown-variant",
+      catalogStatus: "missing",
+      unavailable: true,
+      variant: {
+        id: "retired-unknown-variant",
+        nameZh: "商品已下架",
+        priceCents: 0,
+      },
+    });
+    await expect(
+      checkoutCart(database, browserId, {
+        expectedRevision: 1,
+        idempotencyKey: "checkout:unknown-cart-row",
+        method: "concierge",
+      }),
+    ).rejects.toMatchObject({ code: "UNAVAILABLE" });
+    await expect(
+      setCartItemQuantity(
+        database,
+        browserId,
+        "retired-unknown-variant",
+        -1,
+      ),
+    ).rejects.toMatchObject({ code: "INVALID_CART_ITEM" });
+
+    const updatedCart = await setCartItemQuantity(
+      database,
+      browserId,
+      "retired-unknown-variant",
+      0,
+    );
+    expect(updatedCart.revision).toBe(2);
+    await expect(
+      database.cartItems.where("browserId").equals(browserId).count(),
+    ).resolves.toBe(0);
+  });
+
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, -1, 1.5])(
+    "设置购物袋数量拒绝非法值 %s",
+    async (quantity) => {
+      const database = createTestDatabase(`invalid-set-${String(quantity)}`);
+      const { browserId } = await createActiveMember(database);
+      await addCartItem(database, browserId, "stool-grey", 1);
+
+      await expect(
+        setCartItemQuantity(
+          database,
+          browserId,
+          "stool-grey",
+          quantity,
+        ),
+      ).rejects.toMatchObject({ code: "INVALID_CART_ITEM" });
+      await expect(
+        database.cartItems.get([browserId, "stool-grey"]),
+      ).resolves.toMatchObject({ quantity: 1 });
+    },
+  );
 });
 
 describe("虚拟物流", () => {

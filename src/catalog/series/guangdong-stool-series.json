@@ -1,0 +1,18 @@
+{
+  "id": "guangdong-stool-series",
+  "slug": "guangdong-stool",
+  "nameZh": "粤凳系列",
+  "nameEn": "GUANGDONG STOOL SERIES",
+  "eyebrow": "LINGNAN EVERYDAY FORMS",
+  "description": "从岭南日常坐具出发，以色彩、比例与陈列重新整理熟悉的使用经验。",
+  "heroMedia": {
+    "assetKey": "assets/brand/stool-tricolor-installation.png",
+    "alt": "岭南朱、瓷象牙和骑楼灰三色粤凳组成的展馆装置",
+    "caption": "粤凳系列三色装置",
+    "role": "installation",
+    "aiConcept": true,
+    "width": 2048,
+    "height": 1152
+  },
+  "sortOrder": 10
+}

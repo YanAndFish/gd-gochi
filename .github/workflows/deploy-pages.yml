@@ -33,11 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Install Chromium
+        run: npx playwright install --with-deps --no-shell chromium
 
-      - name: Build storefront
-        run: npm run build
+      - name: Validate catalog, test, build, and run browser QA
+        run: npm run check
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

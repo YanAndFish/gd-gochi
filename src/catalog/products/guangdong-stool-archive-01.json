@@ -1,0 +1,118 @@
+{
+  "id": "guangdong-stool-archive-01",
+  "slug": "guangdong-stool-archive-01",
+  "legacySlugs": [],
+  "seriesId": "guangdong-stool-series",
+  "nameZh": "档案套装 01",
+  "nameEn": "ARCHIVE SET 01",
+  "summary": "瓷象牙、骑楼灰与岭南朱共同呈现，以三件一组的方式记录粤凳 01 的首发色彩。",
+  "publishedAt": "2026-01-01T00:00:00.000Z",
+  "defaultVariantId": "archive-set",
+  "searchTerms": [
+    "档案套装",
+    "典藏套装",
+    "ARCHIVE SET",
+    "粤凳三色"
+  ],
+  "specifications": [
+    {
+      "label": "组成",
+      "value": "瓷象牙、骑楼灰与岭南朱各一件"
+    },
+    {
+      "label": "形态",
+      "value": "三件可独立使用，亦可堆叠呈现"
+    },
+    {
+      "label": "版本",
+      "value": "档案编号版本"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "三种岭南色彩",
+      "body": "套装把粤凳 01 的三个首发色彩并置，让相同轮廓在暖白、冷灰与高光红之间形成清晰节奏。"
+    },
+    {
+      "title": "使用与呈现",
+      "body": "三件作品可以分散进入不同空间，也可以通过堆叠与并置形成完整装置。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "archive-set",
+      "nameZh": "档案套装 01 · 三色典藏",
+      "nameEn": "ARCHIVE SET 01 · THREE-COLOUR EDITION",
+      "shortName": "三色典藏",
+      "option": {
+        "type": "edition",
+        "value": "three-colour",
+        "label": "三色典藏",
+        "colorHex": "#b9a992"
+      },
+      "productClass": "archive",
+      "saleStatus": "active",
+      "priceCents": 12800000,
+      "editionNote": "档案编号 · 每位会员限购一套",
+      "description": "瓷象牙、骑楼灰与岭南朱以档案方式共同呈现，形成一段可堆叠、可使用的岭南色彩记录。",
+      "purchasePolicy": {
+        "requiredTier": "patron",
+        "ineligiblePresentation": "unavailable",
+        "maxPerOrder": 1,
+        "lifetimeLimit": {
+          "quantity": 1,
+          "scope": "product"
+        }
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/products/archive-set.png",
+          "alt": "瓷象牙、骑楼灰和岭南朱三色粤凳 01 套装",
+          "caption": "档案套装 01 · 三色典藏",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 2048,
+          "height": 2048
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/products/archive-set.png",
+            "alt": "瓷象牙、骑楼灰和岭南朱三色粤凳 01 套装",
+            "caption": "档案套装 01 · 三色典藏",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 2048,
+            "height": 2048
+          },
+          {
+            "assetKey": "assets/brand/stool-tricolor-installation.png",
+            "alt": "三色粤凳 01 在明亮展馆中的装置",
+            "caption": "品牌 AI 概念影像 · 三色展馆装置",
+            "role": "installation",
+            "aiConcept": true,
+            "width": 2048,
+            "height": 1152
+          },
+          {
+            "assetKey": "assets/products/stool-red-front.png",
+            "alt": "岭南朱粤凳 01 的正面影棚图",
+            "caption": "岭南朱 · 正面结构",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/editorial/milano-standing-red.png",
+            "alt": "虚构成年米兰模特与岭南朱粤凳 01 的造型展示",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -31,11 +31,19 @@ import {
 } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import {
+  HOME_MERCHANDISING,
   MEMBERSHIP_FEE_CENTS,
-  PRODUCT_VARIANTS,
+  PRODUCTS,
+  PRODUCT_SERIES,
   formatCny,
+  getProduct,
+  getProductsForSeries,
+  getSeries,
+  getSeriesBySlug,
   getVariant,
+  getVariantsForProduct,
   publicAssetUrl,
+  resolveProductRoute,
 } from "./catalog.js";
 import {
   getTierLabel,
@@ -111,6 +119,64 @@ function formatDate(value, includeTime = false) {
 }
 
 /**
+ * 返回商品在总览中使用的价格文案。
+ * @param {import("./catalog.js").ProductDefinition} product - 商品定义。
+ * @returns {string} 单价或价格区间。
+ */
+function formatProductPrice(product) {
+  if (product.minPriceCents === product.maxPriceCents) {
+    return formatCny(product.minPriceCents);
+  }
+  return `${formatCny(product.minPriceCents)} 起`;
+}
+
+/**
+ * 从订单快照解析兼容本地与 GitHub Pages 子路径的图片地址。
+ * @param {{image?: string, imageAsset?: string}} item - 新旧订单商品快照。
+ * @returns {string} 可直接渲染的图片地址。
+ */
+function resolveOrderItemImage(item) {
+  return item.imageAsset ? publicAssetUrl(item.imageAsset) : (item.image ?? "");
+}
+
+/**
+ * 计算购物袋行在当前整袋数量下的公开可售状态。
+ * @param {Object} item - 已与目录合并的购物袋行。
+ * @param {Object[]} cartItems - 当前购物袋全部商品行。
+ * @param {(variantId: string, options?: Object) => Object} getAvailability - 统一资格判断入口。
+ * @param {number} [requestedQuantity] - 准备校验的新数量。
+ * @returns {Object} 面向顾客的可售状态。
+ */
+function getCartItemAvailability(
+  item,
+  cartItems,
+  getAvailability,
+  requestedQuantity = item.quantity,
+) {
+  if (item.unavailable) {
+    return { state: "sold_out", label: "暂时缺货", eligible: false };
+  }
+  const productScoped =
+    item.variant.purchasePolicy?.lifetimeLimit?.scope === "product";
+  const scopeOrderQuantity = productScoped
+    ? cartItems.reduce(
+        (sum, candidate) =>
+          candidate.variant.productId === item.variant.productId
+            ? sum +
+              (candidate.variantId === item.variantId
+                ? requestedQuantity
+                : candidate.quantity)
+            : sum,
+        0,
+      )
+    : requestedQuantity;
+  return getAvailability(item.variant.id, {
+    requestedQuantity,
+    scopeOrderQuantity,
+  });
+}
+
+/**
  * 为演示动画等待一小段时间；系统要求减少动态效果时显著缩短等待。
  * @param {number} milliseconds - 常规动画等待毫秒数。
  * @returns {Promise<void>} 等待完成。
@@ -121,6 +187,25 @@ function waitForPresentation(milliseconds) {
   ).matches;
   return new Promise((resolve) =>
     globalThis.setTimeout(resolve, reduceMotion ? 30 : milliseconds),
+  );
+}
+
+/**
+ * 为生成式编辑场景提供统一且可见的顾客说明。
+ * @param {{media: import("./catalog.js").CatalogMedia, className?: string}} props - 媒体与附加样式。
+ * @returns {import("react").ReactElement | null} AI 概念影像标记。
+ */
+function AiConceptLabel({ media, className = "" }) {
+  if (
+    !media?.aiConcept ||
+    (media.role !== "editorial-ai" && media.role !== "installation")
+  ) {
+    return null;
+  }
+  return (
+    <span className={`media-concept-label ${className}`.trim()}>
+      品牌 AI 概念影像
+    </span>
   );
 }
 
@@ -155,6 +240,7 @@ function SiteLayout({ children }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const limitedVariant = getVariant(HOME_MERCHANDISING.hero.variantId);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -164,13 +250,29 @@ function SiteLayout({ children }) {
   const searchResults = useMemo(() => {
     const normalized = searchQuery.trim().toLocaleLowerCase();
     if (!normalized) {
-      return PRODUCT_VARIANTS.slice(0, 4);
+      return PRODUCTS.slice(0, 4);
     }
-    return PRODUCT_VARIANTS.filter((variant) =>
-      `${variant.nameZh} ${variant.nameEn} ${variant.description}`
-        .toLocaleLowerCase()
-        .includes(normalized),
-    );
+    return PRODUCTS.filter((product) => {
+      const series = getSeries(product.seriesId);
+      const searchableText = [
+        product.nameZh,
+        product.nameEn,
+        product.summary,
+        ...product.searchTerms,
+        series?.nameZh,
+        series?.nameEn,
+        ...product.variants.flatMap((variant) => [
+          variant.nameZh,
+          variant.nameEn,
+          variant.option.label,
+          variant.description,
+        ]),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLocaleLowerCase();
+      return searchableText.includes(normalized);
+    });
   }, [searchQuery]);
 
   return (
@@ -190,15 +292,25 @@ function SiteLayout({ children }) {
             {menuOpen ? <X size={22} /> : <List size={22} />}
           </button>
           <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="主要导航">
-            <NavLink to="/#collection">精品系列</NavLink>
-            <NavLink to="/products/guangdong-stool-01?variant=stool-red">
+            <NavLink to="/products">精品系列</NavLink>
+            <NavLink
+              to={`/products/${limitedVariant.slug}?variant=${limitedVariant.id}`}
+            >
               2026 限定
             </NavLink>
             <NavLink to="/#maison">品牌故事</NavLink>
           </nav>
           <Link className="wordmark" to="/" aria-label="岭南辑造首页">
-            <span>LINGNAN</span>
-            <small>EDITIONS</small>
+            <img
+              className="brand-mark brand-mark-header"
+              src={publicAssetUrl("assets/brand/lingnan-editions-mark.png")}
+              alt=""
+              aria-hidden="true"
+            />
+            <span className="wordmark-type">
+              <span className="wordmark-name">LINGNAN</span>
+              <small>EDITIONS</small>
+            </span>
           </Link>
           <div className="header-actions">
             <button
@@ -249,15 +361,15 @@ function SiteLayout({ children }) {
             </div>
             <div className="search-results" aria-live="polite">
               {searchResults.length ? (
-                searchResults.map((variant) => (
+                searchResults.map((product) => (
                   <Link
-                    key={variant.id}
-                    to={`/products/${variant.slug}?variant=${variant.id}`}
+                    key={product.id}
+                    to={`/products/${product.slug}`}
                   >
-                    <img src={variant.heroImage} alt="" />
+                    <img src={product.heroImage} alt="" />
                     <span>
-                      {variant.nameZh}
-                      <small>{formatCny(variant.priceCents)}</small>
+                      {product.nameZh}
+                      <small>{formatProductPrice(product)}</small>
                     </span>
                   </Link>
                 ))
@@ -277,12 +389,19 @@ function SiteLayout({ children }) {
       <footer className="site-footer">
         <div>
           <Link className="footer-wordmark" to="/">
-            LINGNAN EDITIONS
+            <img
+              className="brand-mark footer-brand-mark"
+              src={publicAssetUrl("assets/brand/lingnan-editions-mark.png")}
+              alt=""
+              aria-hidden="true"
+            />
+            <span>LINGNAN EDITIONS</span>
           </Link>
           <p>岭南为源，辑造当代。</p>
           <p className="serif">ROOTED IN LINGNAN. EDITED FOR THE PRESENT.</p>
         </div>
         <div className="footer-links">
+          <Link to="/products">全部商品</Link>
           <Link to="/membership">会员制度</Link>
           <Link to="/orders">订单档案</Link>
           <Link to="/bag">购物袋</Link>
@@ -311,6 +430,7 @@ function ProductCard({ variant, editorial = false }) {
         to={`/products/${variant.slug}?variant=${variant.id}`}
       >
         <img src={variant.heroImage} alt={`${variant.nameZh}影棚展示`} />
+        <AiConceptLabel media={variant.media.hero} />
         <span className="product-card-action" aria-hidden="true">
           查看作品 <ArrowRight size={14} />
         </span>
@@ -331,16 +451,60 @@ function ProductCard({ variant, editorial = false }) {
 }
 
 /**
+ * 商品总览与系列页使用的独立商品卡片。
+ * @param {{product: import("./catalog.js").ProductDefinition}} props - 商品卡片参数。
+ * @returns {import("react").ReactElement} 商品总览卡片。
+ */
+function CatalogProductCard({ product }) {
+  const { getAvailability } = useCommerce();
+  const variant =
+    getVariant(product.defaultVariantId) ?? product.variants[0];
+  const availability = getAvailability(variant.id);
+  return (
+    <article className="product-card catalog-product-card">
+      <Link
+        className="product-card-image"
+        to={`/products/${product.slug}`}
+        aria-label={`查看${product.nameZh}`}
+      >
+        <img src={variant.media.hero.src} alt={variant.media.hero.alt} />
+        <AiConceptLabel media={variant.media.hero} />
+        <span className="product-card-action" aria-hidden="true">
+          查看作品 <ArrowRight size={14} />
+        </span>
+      </Link>
+      <div className="product-card-copy">
+        <p className="eyebrow">{variant.editionNote}</p>
+        <h3>{product.nameZh}</h3>
+        <p className="product-name-en">{product.nameEn}</p>
+        <p className="catalog-product-summary">{product.summary}</p>
+        <div className="product-card-meta">
+          <span>{formatProductPrice(product)}</span>
+          <span className={availability.state === "available" ? "" : "muted"}>
+            {availability.state === "available" ? "可供选购" : availability.label}
+          </span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/**
  * 品牌首页。
  * @returns {import("react").ReactElement} 首页。
  */
 function HomePage() {
   const { getAvailability } = useCommerce();
-  const featured = PRODUCT_VARIANTS.find((variant) => variant.id === "stool-red");
-  const standardVariants = PRODUCT_VARIANTS.filter(
-    (variant) => variant.productClass === "standard",
+  const featured = getVariant(HOME_MERCHANDISING.hero.variantId);
+  const archiveProduct = getProduct(HOME_MERCHANDISING.archiveProductId);
+  const archive =
+    getVariant(archiveProduct.defaultVariantId) ?? archiveProduct.variants[0];
+  const rougeEditorial = HOME_MERCHANDISING.editorials.find(
+    (editorial) => editorial.variantId === featured.id,
   );
-  const archive = PRODUCT_VARIANTS.find((variant) => variant.id === "archive-set");
+  const maisonEditorial = HOME_MERCHANDISING.editorials.find(
+    (editorial) => editorial.id === "three-colour-installation",
+  );
   const featuredAvailability = getAvailability(featured.id);
   return (
     <>
@@ -348,8 +512,12 @@ function HomePage() {
       <section className="home-hero" aria-labelledby="home-hero-title">
         <img
           className="home-hero-image"
-          src={publicAssetUrl("assets/brand/home-hero-gallery.png")}
-          alt="白色美术馆中陈列一件岭南朱粤凳 01"
+          src={HOME_MERCHANDISING.hero.media.src}
+          alt={HOME_MERCHANDISING.hero.media.alt}
+        />
+        <AiConceptLabel
+          className="home-hero-concept-label"
+          media={HOME_MERCHANDISING.hero.media}
         />
         <div className="home-hero-copy">
           <p className="eyebrow">LINGNAN EDITIONS · 2026</p>
@@ -383,10 +551,49 @@ function HomePage() {
         </p>
       </section>
 
-      <section className="collection-grid section-pad" aria-label="常设系列">
-        {standardVariants.map((variant) => (
-          <ProductCard key={variant.id} variant={variant} />
+      <section
+        className="collection-grid section-pad"
+        aria-label="岭南辑造新品"
+      >
+        {PRODUCTS.map((product) => (
+          <CatalogProductCard key={product.id} product={product} />
         ))}
+      </section>
+
+      <div className="catalog-home-link">
+        <Link className="text-link" to="/products">
+          查看全部商品与系列 <ArrowRight size={15} />
+        </Link>
+      </div>
+
+      <section className="home-series-index section-pad" aria-label="品牌系列">
+        <div className="home-series-heading">
+          <div>
+            <p className="eyebrow">THE SERIES</p>
+            <h2>由系列进入岭南日常</h2>
+          </div>
+          <Link className="text-link" to="/products">
+            全部系列 <ArrowRight size={15} />
+          </Link>
+        </div>
+        <div className="home-series-grid">
+          {PRODUCT_SERIES.map((series) => (
+            <article key={series.id} className="home-series-card">
+              <Link to={`/series/${series.slug}`}>
+                <img src={series.heroMedia.src} alt={series.heroMedia.alt} />
+                <AiConceptLabel
+                  className="home-series-concept-label"
+                  media={series.heroMedia}
+                />
+                <span>
+                  <small>{series.eyebrow}</small>
+                  <strong>{series.nameZh}</strong>
+                  <em>{series.nameEn}</em>
+                </span>
+              </Link>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="rouge-feature">
@@ -411,17 +618,20 @@ function HomePage() {
           </Link>
         </div>
         <img
-          src={publicAssetUrl("assets/editorial/milano-standing-red.png")}
-          alt="虚构成年米兰时装模特与岭南朱粤凳 01 的造型展示"
+          src={rougeEditorial.media.src}
+          alt={rougeEditorial.media.alt}
         />
         <p className="ai-caption">品牌 AI 概念影像</p>
       </section>
 
       <section className="maison-story section-pad" id="maison">
-        <img
-          src={publicAssetUrl("assets/brand/stool-tricolor-installation.png")}
-          alt="岭南朱、瓷象牙和骑楼灰三色粤凳 01 美术馆装置"
-        />
+        <div className="maison-media">
+          <img
+            src={maisonEditorial.media.src}
+            alt={maisonEditorial.media.alt}
+          />
+          <AiConceptLabel media={maisonEditorial.media} />
+        </div>
         <div>
           <p className="eyebrow">THE MAISON</p>
           <h2>岭南为源，<br />辑造当代。</h2>
@@ -458,44 +668,147 @@ function HomePage() {
 }
 
 /**
+ * 全部商品与系列总览页。
+ * @returns {import("react").ReactElement} 商品总览。
+ */
+function ProductsPage() {
+  return (
+    <>
+      <PageMeta title="全部商品" />
+      <section className="page-hero catalog-page-hero">
+        <p className="eyebrow">ALL EDITIONS</p>
+        <h1>岭南当代器物</h1>
+        <p>
+          从熟悉的形制、色彩与日常动作出发，进入每个系列与作品的完整档案。
+        </p>
+      </section>
+      <div className="catalog-index section-pad">
+        {PRODUCT_SERIES.map((series) => {
+          const products = getProductsForSeries(series.id);
+          return (
+            <section
+              className="catalog-series-section"
+              key={series.id}
+              aria-labelledby={`series-${series.id}`}
+            >
+              <div className="catalog-series-heading">
+                <div>
+                  <p className="eyebrow">{series.eyebrow}</p>
+                  <h2 id={`series-${series.id}`}>{series.nameZh}</h2>
+                  <p className="product-name-en">{series.nameEn}</p>
+                </div>
+                <Link className="text-link" to={`/series/${series.slug}`}>
+                  进入系列 <ArrowRight size={15} />
+                </Link>
+              </div>
+              <p className="catalog-series-description">{series.description}</p>
+              <div className="catalog-product-grid">
+                {products.map((product) => (
+                  <CatalogProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+/**
+ * 单一商品系列页。
+ * @returns {import("react").ReactElement} 系列页或 404 页面。
+ */
+function SeriesPage() {
+  const { slug } = useParams();
+  const series = getSeriesBySlug(slug);
+  if (!series) {
+    return <NotFoundPage />;
+  }
+  const products = getProductsForSeries(series.id);
+  return (
+    <>
+      <PageMeta title={series.nameZh} />
+      <section className="series-hero">
+        <img src={series.heroMedia.src} alt={series.heroMedia.alt} />
+        <div>
+          <p className="eyebrow">{series.eyebrow}</p>
+          <h1>{series.nameZh}</h1>
+          <p className="product-name-en">{series.nameEn}</p>
+          <p>{series.description}</p>
+          {series.heroMedia.aiConcept ? (
+            <small>品牌 AI 概念影像</small>
+          ) : null}
+        </div>
+      </section>
+      <section className="series-products section-pad">
+        <div className="catalog-series-heading">
+          <div>
+            <p className="eyebrow">SERIES INDEX</p>
+            <h2>系列作品</h2>
+          </div>
+          <Link className="text-link" to="/products">
+            查看全部系列 <ArrowRight size={15} />
+          </Link>
+        </div>
+        <div className="catalog-product-grid">
+          {products.map((product) => (
+            <CatalogProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+/**
  * 商品详情页。
  * @returns {import("react").ReactElement} 商品详情。
  */
 function ProductPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialVariant =
-    getVariant(searchParams.get("variant")) ?? PRODUCT_VARIANTS[0];
-  const [selectedVariantId, setSelectedVariantId] = useState(initialVariant.id);
+  const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const [notice, setNotice] = useState("");
   const { addToCart, getAvailability } = useCommerce();
   const navigate = useNavigate();
-  const variant = getVariant(selectedVariantId) ?? PRODUCT_VARIANTS[0];
-  const availability = getAvailability(variant.id);
-  const modelImage =
-    variant.id === "stool-red" || variant.id === "archive-set"
-      ? publicAssetUrl("assets/editorial/milano-standing-red.png")
-      : variant.id === "stool-ivory"
-        ? publicAssetUrl("assets/editorial/milano-seated-ivory.png")
-        : null;
-  const gallery = [
-    ...new Set([...variant.gallery, ...(modelImage ? [modelImage] : [])]),
-  ];
+  const requestedVariantId = searchParams.get("variant");
+  const resolution = useMemo(
+    () => resolveProductRoute(slug, requestedVariantId),
+    [requestedVariantId, slug],
+  );
 
   useEffect(() => {
-    const next = getVariant(searchParams.get("variant"));
-    if (next && next.id !== selectedVariantId) {
-      setSelectedVariantId(next.id);
+    if (
+      resolution.status === "redirect" &&
+      resolution.canonicalPath
+    ) {
+      navigate(
+        `${resolution.canonicalPath}${resolution.canonicalSearch}`,
+        { replace: true },
+      );
     }
-  }, [searchParams, selectedVariantId]);
+  }, [navigate, resolution]);
+
+  useEffect(() => {
+    setNotice("");
+  }, [requestedVariantId, slug]);
+
+  if (resolution.status === "not_found") {
+    return <NotFoundPage />;
+  }
+
+  const { product, variant } = resolution;
+  const productVariants = getVariantsForProduct(product.id);
+  const series = getSeries(product.seriesId);
+  const availability = getAvailability(variant.id);
 
   /**
-   * 切换颜色并同步到可分享的查询参数。
+   * 切换当前商品的变体并同步到 canonical URL。
    * @param {string} variantId - 新变体标识。
    * @returns {void}
    */
   function selectVariant(variantId) {
-    setSelectedVariantId(variantId);
-    setSearchParams({ variant: variantId });
+    navigate(`/products/${product.slug}?variant=${variantId}`);
     setNotice("");
   }
 
@@ -523,29 +836,26 @@ function ProductPage() {
     <>
       <PageMeta title={variant.nameZh} />
       <div className="product-page">
-        <Link className="back-link" to="/#collection">
-          <ArrowLeft size={15} /> 返回精品系列
+        <Link
+          className="back-link"
+          to={series ? `/series/${series.slug}` : "/products"}
+        >
+          <ArrowLeft size={15} /> 返回{series?.nameZh ?? "全部商品"}
         </Link>
         <div className="product-layout">
           <div className="product-gallery">
-            {gallery.map((image, index) => {
-              const isModel = image.includes("milano");
-              return (
-                <figure key={`${variant.id}-${image}`}>
-                  <img
-                    src={image}
-                    alt={
-                      isModel
-                        ? `虚构成年米兰时装模特试用${variant.shortName}造型`
-                        : `${variant.nameZh}${index + 1}角度影棚图`
-                    }
-                  />
-                  {isModel ? (
-                    <figcaption>品牌 AI 概念影像 · 虚构成年模特</figcaption>
-                  ) : null}
-                </figure>
-              );
-            })}
+            {variant.media.gallery.map((media) => (
+              <figure key={`${variant.id}-${media.assetKey}`}>
+                <img src={media.src} alt={media.alt} />
+                <figcaption>
+                  {media.caption}
+                  {media.aiConcept &&
+                  !media.caption.includes("品牌 AI 概念影像")
+                    ? " · 品牌 AI 概念影像"
+                    : ""}
+                </figcaption>
+              </figure>
+            ))}
           </div>
           <aside className="product-summary">
             <p className="eyebrow">{variant.editionNote}</p>
@@ -553,31 +863,38 @@ function ProductPage() {
             <p className="product-name-en">{variant.nameEn}</p>
             <p className="product-price">{formatCny(variant.priceCents)}</p>
             <p className="product-description">{variant.description}</p>
-            <fieldset className="variant-selector">
-              <legend>选择版本</legend>
-              <div>
-                {PRODUCT_VARIANTS.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className={option.id === variant.id ? "is-selected" : ""}
-                    aria-pressed={option.id === variant.id}
-                    onClick={() => selectVariant(option.id)}
-                  >
-                    <span
-                      className="swatch"
-                      style={{ backgroundColor: option.colorHex }}
-                      aria-hidden="true"
-                    />
-                    <span>{option.shortName}</span>
-                  </button>
-                ))}
-              </div>
-            </fieldset>
+            {productVariants.length > 1 ? (
+              <fieldset className="variant-selector">
+                <legend>选择版本</legend>
+                <div>
+                  {productVariants.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      className={option.id === variant.id ? "is-selected" : ""}
+                      aria-pressed={option.id === variant.id}
+                      onClick={() => selectVariant(option.id)}
+                    >
+                      {option.option.colorHex ? (
+                        <span
+                          className="swatch"
+                          style={{ backgroundColor: option.option.colorHex }}
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <span>{option.option.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            ) : null}
             <button
               className="button button-dark product-cta"
               type="button"
-              disabled={availability.state === "sold_out"}
+              disabled={
+                availability.state !== "available" &&
+                availability.state !== "membership_required"
+              }
               aria-label={`${variant.nameZh}：${availability.label}`}
               onClick={handlePrimaryAction}
             >
@@ -590,19 +907,22 @@ function ProductPage() {
               {notice}
             </p>
             <div className="product-facts">
-              <details open>
-                <summary>作品细节</summary>
-                <p>
-                  高光一体注塑结构；圆角方形座面；中央提握孔；
-                  四向拱口；可堆叠收纳。每件作品附专属编号。
-                </p>
-              </details>
+              {product.detailSections.map((section, index) => (
+                <details key={section.title} open={index === 0}>
+                  <summary>{section.title}</summary>
+                  <p>{section.body}</p>
+                </details>
+              ))}
               <details>
-                <summary>尺寸与材质</summary>
-                <p>
-                  约 46 × 38 × 30 cm。高光聚丙烯概念材质。
-                  本站仅作视觉与交互演示，参数不构成真实销售承诺。
-                </p>
+                <summary>规格与用途</summary>
+                <dl className="product-specifications">
+                  {product.specifications.map((specification) => (
+                    <div key={specification.label}>
+                      <dt>{specification.label}</dt>
+                      <dd>{specification.value}</dd>
+                    </div>
+                  ))}
+                </dl>
               </details>
               <details>
                 <summary>礼宾配送</summary>
@@ -869,7 +1189,9 @@ function BagPage() {
   } = useCommerce();
   const [notice, setNotice] = useState("");
   const invalidItem = cartItems.find(
-    (item) => getAvailability(item.variant.id).state !== "available",
+    (item) =>
+      getCartItemAvailability(item, cartItems, getAvailability).state !==
+      "available",
   );
 
   /**
@@ -899,16 +1221,26 @@ function BagPage() {
           <div className="empty-state">
             <Handbag size={42} weight="thin" aria-hidden="true" />
             <h2>购物袋是空的</h2>
-            <p>从粤凳 01 的三种岭南色彩开始选择。</p>
-            <Link className="button button-dark" to="/#collection">
-              浏览精品系列
+            <p>从全部系列中选择适合当代生活的岭南器物。</p>
+            <Link className="button button-dark" to="/products">
+              浏览全部商品
             </Link>
           </div>
         ) : (
           <div className="bag-layout">
             <div className="bag-items">
               {cartItems.map((item) => {
-                const availability = getAvailability(item.variant.id);
+                const availability = getCartItemAvailability(
+                  item,
+                  cartItems,
+                  getAvailability,
+                );
+                const nextAvailability = getCartItemAvailability(
+                  item,
+                  cartItems,
+                  getAvailability,
+                  item.quantity + 1,
+                );
                 return (
                   <article className="bag-item" key={item.variantId}>
                     <img
@@ -919,7 +1251,11 @@ function BagPage() {
                       <p className="eyebrow">{item.variant.editionNote}</p>
                       <h2>{item.variant.nameZh}</h2>
                       <p className="product-name-en">{item.variant.nameEn}</p>
-                      <p>{formatCny(item.variant.priceCents)}</p>
+                      <p>
+                        {item.unavailable
+                          ? "不计入作品小计"
+                          : formatCny(item.variant.priceCents)}
+                      </p>
                       {availability.state !== "available" ? (
                         <p className="unavailable-label">{availability.label}</p>
                       ) : null}
@@ -937,7 +1273,7 @@ function BagPage() {
                         <button
                           type="button"
                           aria-label={`增加${item.variant.nameZh}数量`}
-                          disabled={item.variant.purchaseLimit === 1}
+                          disabled={nextAvailability.state !== "available"}
                           onClick={() =>
                             updateQuantity(item.variantId, item.quantity + 1)
                           }
@@ -945,6 +1281,13 @@ function BagPage() {
                           <Plus size={15} />
                         </button>
                       </div>
+                      <button
+                        className="text-button bag-remove-button"
+                        type="button"
+                        onClick={() => updateQuantity(item.variantId, 0)}
+                      >
+                        移出购物袋
+                      </button>
                     </div>
                   </article>
                 );
@@ -966,7 +1309,13 @@ function BagPage() {
               </div>
               {invalidItem ? (
                 <p className="unavailable-label" aria-live="polite">
-                  {getAvailability(invalidItem.variant.id).label}
+                  {
+                    getCartItemAvailability(
+                      invalidItem,
+                      cartItems,
+                      getAvailability,
+                    ).label
+                  }
                 </p>
               ) : (
                 <Link className="button button-dark" to="/checkout">
@@ -1008,7 +1357,9 @@ function CheckoutPage() {
   const hasChangedStepRef = useRef(false);
   const navigate = useNavigate();
   const invalidItem = cartItems.find(
-    (item) => getAvailability(item.variant.id).state !== "available",
+    (item) =>
+      getCartItemAvailability(item, cartItems, getAvailability).state !==
+      "available",
   );
 
   useEffect(() => {
@@ -1066,8 +1417,8 @@ function CheckoutPage() {
           <div className="empty-state">
             <Handbag size={42} weight="thin" />
             <h1>购物袋是空的</h1>
-            <Link className="button button-dark" to="/#collection">
-              返回精品系列
+            <Link className="button button-dark" to="/products">
+              返回全部商品
             </Link>
           </div>
         </section>
@@ -1108,7 +1459,11 @@ function CheckoutPage() {
                 </h2>
                 <div className="checkout-products">
                   {cartItems.map((item) => {
-                    const availability = getAvailability(item.variant.id);
+                    const availability = getCartItemAvailability(
+                      item,
+                      cartItems,
+                      getAvailability,
+                    );
                     return (
                       <article key={item.variantId}>
                         <img src={item.variant.heroImage} alt="" />
@@ -1116,7 +1471,9 @@ function CheckoutPage() {
                           <h3>{item.variant.nameZh}</h3>
                           <p>{item.variant.nameEn}</p>
                           <span>
-                            {item.quantity} × {formatCny(item.variant.priceCents)}
+                            {item.unavailable
+                              ? "不计入小计"
+                              : `${item.quantity} × ${formatCny(item.variant.priceCents)}`}
                           </span>
                           {availability.state !== "available" ? (
                             <strong className="unavailable-label">
@@ -1258,7 +1615,11 @@ function OrdersPage() {
               <Link to={`/orders/${order.id}`} key={order.id}>
                 <div className="order-thumbnails">
                   {order.items.slice(0, 3).map((item) => (
-                    <img key={item.variantId} src={item.image} alt="" />
+                    <img
+                      key={item.variantId}
+                      src={resolveOrderItemImage(item)}
+                      alt=""
+                    />
                   ))}
                 </div>
                 <div>
@@ -1445,7 +1806,7 @@ function OrderDetailPage() {
             <div className="order-record-items">
               {order.items.map((item) => (
                 <article key={item.variantId}>
-                  <img src={item.image} alt="" />
+                  <img src={resolveOrderItemImage(item)} alt="" />
                   <div>
                     <strong>{item.nameZh}</strong>
                     <span>
@@ -1503,7 +1864,9 @@ export function App() {
     <SiteLayout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
+        <Route path="/series/:slug" element={<SeriesPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route
           path="/membership/checkout"

@@ -1,0 +1,21 @@
+{
+  "name": "岭南辑造 · LINGNAN EDITIONS",
+  "short_name": "岭南辑造",
+  "description": "以岭南文化为源，辑造面向当代生活的设计器物。",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#f5f2ec",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

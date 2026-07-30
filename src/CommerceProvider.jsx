@@ -9,7 +9,10 @@ import {
 } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { PRODUCT_VARIANTS, getVariant } from "./catalog.js";
-import { resolvePublicAvailability } from "./commerce-rules.js";
+import {
+  evaluatePurchaseEligibility,
+  isPositiveInteger,
+} from "./commerce-rules.js";
 import {
   CommerceError,
   activateMembership,
@@ -17,6 +20,7 @@ import {
   checkoutCart,
   commerceDb,
   initializeBrowserIdentity,
+  mergeCartItemWithCatalog,
   refreshMembership,
   setCartItemQuantity,
 } from "./db.js";
@@ -37,7 +41,7 @@ const SYNC_CHANNEL_NAME = "lingnan-editions-commerce-sync";
  * @property {number} cartCount - 购物袋商品总数。
  * @property {number} cartSubtotalCents - 购物袋目录价小计。
  * @property {Array<Object>} orders - 历史订单。
- * @property {(variantId: string) => Object} getAvailability - 获取商品公开可售状态。
+ * @property {(variantId: string, options?: Object) => Object} getAvailability - 获取商品公开可售状态。
  * @property {(variantId: string, quantity?: number) => Promise<void>} addToCart - 加入购物袋。
  * @property {(variantId: string, quantity: number) => Promise<void>} setQuantity - 设置商品数量。
  * @property {(method: "concierge" | "unionpay", idempotencyKey: string) => Promise<Object>} payMembership - 支付会费。
@@ -195,63 +199,99 @@ export function CommerceProvider({ children }) {
   const ordersReady = Array.isArray(liveOrders);
 
   const cartItems = useMemo(
-    () =>
-      rawCartItems
-        .map((item) => {
-          const variant = getVariant(item.variantId);
-          return variant ? { ...item, variant } : null;
-        })
-        .filter(Boolean),
+    () => rawCartItems.map(mergeCartItemWithCatalog),
     [rawCartItems],
   );
   const cartCount = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.quantity, 0),
+    () =>
+      cartItems.reduce(
+        (sum, item) =>
+          isPositiveInteger(item.quantity) ? sum + item.quantity : sum,
+        0,
+      ),
     [cartItems],
   );
   const cartSubtotalCents = useMemo(
     () =>
       cartItems.reduce(
-        (sum, item) => sum + item.variant.priceCents * item.quantity,
+        (sum, item) =>
+          item.unavailable || !isPositiveInteger(item.quantity)
+            ? sum
+            : sum + item.variant.priceCents * item.quantity,
         0,
       ),
     [cartItems],
   );
   const purchasedQuantities = useMemo(() => {
-    const quantities = new Map(PRODUCT_VARIANTS.map((variant) => [variant.id, 0]));
+    const variants = new Map(
+      PRODUCT_VARIANTS.map((variant) => [variant.id, 0]),
+    );
+    const products = new Map();
     orders.forEach((order) => {
-      order.items.forEach((item) => {
-        quantities.set(
+      (order.items ?? []).forEach((item) => {
+        variants.set(
           item.variantId,
-          (quantities.get(item.variantId) ?? 0) + item.quantity,
+          (variants.get(item.variantId) ?? 0) + item.quantity,
         );
+        const productId =
+          item.productId ?? getVariant(item.variantId)?.productId ?? null;
+        if (productId) {
+          products.set(
+            productId,
+            (products.get(productId) ?? 0) + item.quantity,
+          );
+        }
       });
     });
-    return quantities;
+    return { variants, products };
   }, [orders]);
+  const cartQuantities = useMemo(() => {
+    const variants = new Map();
+    const products = new Map();
+    rawCartItems.forEach((item) => {
+      variants.set(
+        item.variantId,
+        (variants.get(item.variantId) ?? 0) + item.quantity,
+      );
+      const variant = getVariant(item.variantId);
+      if (variant) {
+        products.set(
+          variant.productId,
+          (products.get(variant.productId) ?? 0) + item.quantity,
+        );
+      }
+    });
+    return { variants, products };
+  }, [rawCartItems]);
 
   /**
    * 返回商品对当前身份的公开状态。
    * @param {string} variantId - 商品变体标识。
+   * @param {{requestedQuantity?: number, scopeOrderQuantity?: number}} [options] - 本单数量上下文。
    * @returns {Object} 公开状态。
    */
   const getAvailability = useCallback(
-    (variantId) => {
+    (variantId, options = {}) => {
       const variant = getVariant(variantId);
       if (!variant) {
-        return { state: "sold_out", label: "暂时缺货" };
+        return {
+          eligible: false,
+          reason: "catalog_missing",
+          errorCode: "UNAVAILABLE",
+          state: "sold_out",
+          label: "暂时缺货",
+        };
       }
-      if (
-        !ordersReady &&
-        (variant.productClass === "limited" ||
-          variant.productClass === "archive")
-      ) {
-        return { state: "sold_out", label: "暂时缺货" };
-      }
-      return resolvePublicAvailability(
-        variant,
-        membership,
-        purchasedQuantities.get(variantId) ?? 0,
-      );
+      return evaluatePurchaseEligibility(variant, membership, {
+        requestedQuantity: options.requestedQuantity ?? 1,
+        scopeOrderQuantity:
+          options.scopeOrderQuantity ?? options.requestedQuantity ?? 1,
+        purchasedVariantQuantity:
+          purchasedQuantities.variants.get(variantId) ?? 0,
+        purchasedProductQuantity:
+          purchasedQuantities.products.get(variant.productId) ?? 0,
+        purchaseHistoryAvailable: ordersReady,
+      });
     },
     [membership, ordersReady, purchasedQuantities],
   );
@@ -265,17 +305,36 @@ export function CommerceProvider({ children }) {
   const addToCart = useCallback(
     async (variantId, quantity = 1) => {
       assertStorage();
-      const availability = getAvailability(variantId);
-      if (availability.state === "sold_out") {
+      if (!isPositiveInteger(quantity)) {
+        throw new CommerceError("INVALID_CART_ITEM");
+      }
+      const variant = getVariant(variantId);
+      if (!variant) {
         throw new CommerceError("UNAVAILABLE");
       }
-      if (availability.state === "membership_required") {
-        throw new CommerceError("MEMBERSHIP_REQUIRED");
+      const requestedQuantity =
+        (cartQuantities.variants.get(variantId) ?? 0) + quantity;
+      const scopeOrderQuantity =
+        variant.purchasePolicy?.lifetimeLimit?.scope === "product"
+          ? (cartQuantities.products.get(variant.productId) ?? 0) + quantity
+          : requestedQuantity;
+      const availability = getAvailability(variantId, {
+        requestedQuantity,
+        scopeOrderQuantity,
+      });
+      if (!availability.eligible) {
+        throw new CommerceError(availability.errorCode ?? "UNAVAILABLE");
       }
       await addCartItem(commerceDb, identity.browserId, variantId, quantity);
       broadcastChange("cart");
     },
-    [assertStorage, broadcastChange, getAvailability, identity],
+    [
+      assertStorage,
+      broadcastChange,
+      cartQuantities,
+      getAvailability,
+      identity,
+    ],
   );
 
   /**

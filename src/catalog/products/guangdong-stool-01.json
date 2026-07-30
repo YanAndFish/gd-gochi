@@ -1,0 +1,246 @@
+{
+  "id": "guangdong-stool-01",
+  "slug": "guangdong-stool-01",
+  "legacySlugs": [],
+  "seriesId": "guangdong-stool-series",
+  "nameZh": "粤凳 01",
+  "nameEn": "GUANGDONG STOOL N°01",
+  "summary": "方形圆角坐面、中央圆孔与四面拱形开口，共同构成一件熟悉而清晰的岭南日常器物。",
+  "publishedAt": "2026-01-01T00:00:00.000Z",
+  "defaultVariantId": "stool-ivory",
+  "searchTerms": [
+    "粤凳",
+    "广东胶凳",
+    "GUANGDONG STOOL",
+    "岭南朱",
+    "瓷象牙",
+    "骑楼灰"
+  ],
+  "specifications": [
+    {
+      "label": "形态",
+      "value": "方形圆角坐面与中央圆孔"
+    },
+    {
+      "label": "结构",
+      "value": "四面拱形开口，可堆叠"
+    },
+    {
+      "label": "用途",
+      "value": "适用于坐用、临时置物与空间陈列"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "熟悉轮廓，重新进入空间",
+      "body": "粤凳 01 保留日常胶凳直接、轻巧的使用方式，以更克制的色彩和影像语言进入当代室内。"
+    },
+    {
+      "title": "四面相通",
+      "body": "拱形开口让器物从不同方向保持通透，中央圆孔延续了便于取放与堆叠的熟悉动作。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "stool-ivory",
+      "nameZh": "粤凳 01 · 瓷象牙",
+      "nameEn": "GUANGDONG STOOL N°01 · PORCELAIN IVORY",
+      "shortName": "瓷象牙",
+      "option": {
+        "type": "colour",
+        "value": "porcelain-ivory",
+        "label": "瓷象牙",
+        "colorHex": "#d9d2bf"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "暖象牙色收敛了熟悉轮廓的喧闹，让粤凳 01 以更安静的姿态进入当代空间。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/products/stool-ivory-three-quarter.png",
+          "alt": "瓷象牙粤凳 01 的四分之三侧影棚图",
+          "caption": "瓷象牙 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/products/stool-ivory-three-quarter.png",
+            "alt": "瓷象牙粤凳 01 的四分之三侧影棚图",
+            "caption": "瓷象牙 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/products/stool-ivory-side.png",
+            "alt": "瓷象牙粤凳 01 的侧面影棚图",
+            "caption": "瓷象牙 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/editorial/milano-seated-ivory.png",
+            "alt": "虚构成年米兰模特坐用瓷象牙粤凳 01",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-grey",
+      "nameZh": "粤凳 01 · 骑楼灰",
+      "nameEn": "GUANGDONG STOOL N°01 · ARCADE GREY",
+      "shortName": "骑楼灰",
+      "option": {
+        "type": "colour",
+        "value": "arcade-grey",
+        "label": "骑楼灰",
+        "colorHex": "#8f918f"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "冷灰色取自雨后骑楼的石面，与高光曲面形成克制而清晰的反差。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/products/stool-grey-three-quarter.png",
+          "alt": "骑楼灰粤凳 01 的四分之三侧影棚图",
+          "caption": "骑楼灰 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/products/stool-grey-three-quarter.png",
+            "alt": "骑楼灰粤凳 01 的四分之三侧影棚图",
+            "caption": "骑楼灰 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/products/stool-grey-front.png",
+            "alt": "骑楼灰粤凳 01 的正面影棚图",
+            "caption": "骑楼灰 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 2048,
+            "height": 2048
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-red",
+      "nameZh": "粤凳 01 · 岭南朱",
+      "nameEn": "GUANGDONG STOOL N°01 · LINGNAN ROUGE",
+      "shortName": "岭南朱",
+      "option": {
+        "type": "colour",
+        "value": "lingnan-rouge",
+        "label": "岭南朱",
+        "colorHex": "#df151b"
+      },
+      "productClass": "limited",
+      "saleStatus": "active",
+      "priceCents": 3880000,
+      "editionNote": "2026 限定编号 · 每位会员限购一件",
+      "description": "岭南朱保留最直接的高光红色，将街巷、排档与家宴中的共同记忆凝练为一件醒目的当代器物。",
+      "purchasePolicy": {
+        "requiredTier": "collector",
+        "ineligiblePresentation": "unavailable",
+        "maxPerOrder": 1,
+        "lifetimeLimit": {
+          "quantity": 1,
+          "scope": "variant"
+        }
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/products/stool-red-three-quarter.png",
+          "alt": "岭南朱粤凳 01 的四分之三侧影棚图",
+          "caption": "岭南朱 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/products/stool-red-three-quarter.png",
+            "alt": "岭南朱粤凳 01 的四分之三侧影棚图",
+            "caption": "岭南朱 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/products/stool-red-front.png",
+            "alt": "岭南朱粤凳 01 的正面影棚图",
+            "caption": "岭南朱 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/products/stool-red-side.png",
+            "alt": "岭南朱粤凳 01 的侧面影棚图",
+            "caption": "岭南朱 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/products/stool-red-top-detail.png",
+            "alt": "岭南朱粤凳 01 的坐面与中央圆孔细节",
+            "caption": "岭南朱 · 坐面细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1020,
+            "height": 1275
+          },
+          {
+            "assetKey": "assets/editorial/milano-standing-red.png",
+            "alt": "虚构成年米兰模特与岭南朱粤凳 01 的造型展示",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}

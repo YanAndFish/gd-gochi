@@ -5,10 +5,18 @@
   "homepage": "https://yanandfish.github.io/gd-gochi/",
   "type": "module",
   "scripts": {
+    "catalog:validate": "node scripts/validate-catalog.mjs",
     "dev": "vite",
-    "build": "vite build",
+    "prebuild": "npm run catalog:validate",
+    "build": "npm run build:bundle",
+    "build:bundle": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "pretest": "npm run catalog:validate",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "check:pages": "node scripts/check-pages-build.mjs",
+    "check": "npm run catalog:validate && npm run test:unit && npm run build:bundle && npm run check:pages && npm run test:e2e"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -21,6 +29,7 @@
     "vite": "6.4.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "fake-indexeddb": "^6.2.5",
     "vitest": "^4.1.10"
   }
