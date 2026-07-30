@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="LINGNAN EDITIONS 岭南辑造——以岭南文化为源，辑造面向当代生活的设计器物。"
+    />
+    <link rel="canonical" href="https://yanandfish.github.io/gd-gochi/" />
+    <meta property="og:url" content="https://yanandfish.github.io/gd-gochi/" />
+    <meta property="og:title" content="岭南辑造 · LINGNAN EDITIONS" />
+    <meta
+      property="og:description"
+      content="以岭南文化为源，辑造面向当代生活的设计器物。"
+    />
+    <meta name="theme-color" content="#f5f2ec" />
+    <script>
+      // 还原 GitHub Pages 404 回退脚本编码的前端路由。
+      (function restoreGithubPagesRoute(location) {
+        if (location.search.startsWith("?/")) {
+          const route = location.search
+            .slice(1)
+            .split("&")
+            .map((part) => part.replaceAll("~and~", "&"))
+            .join("?");
+          window.history.replaceState(
+            null,
+            "",
+            `${location.pathname.slice(0, -1)}${route}${location.hash}`,
+          );
+        }
+      })(window.location);
+    </script>
+    <title>岭南辑造 · LINGNAN EDITIONS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
