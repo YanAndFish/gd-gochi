@@ -30,10 +30,19 @@ for (const viewport of VIEWPORTS) {
         'main a[href*="/products/guangdong-stool-01"]',
       ).first(),
     ).toBeVisible();
+    await expect(
+      page.locator(
+        'main a[href*="/products/guangdong-stool-02"]',
+      ).first(),
+    ).toBeVisible();
     await expectNoHorizontalOverflow(page);
 
     await gotoRoute(page, "series/guangdong-stool");
     await expect(page.locator("main")).toContainText("粤凳系列");
+    await expectNoHorizontalOverflow(page);
+
+    await gotoRoute(page, "products/guangdong-stool-02");
+    await expect(page.locator("main")).toContainText("粤凳 02 · 浅蓝");
     await expectNoHorizontalOverflow(page);
   });
 }

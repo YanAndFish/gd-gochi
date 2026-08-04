@@ -88,6 +88,8 @@ public/assets/catalog/<product-id>/<variant-id>/
 
 商品共用的编辑场景和新系列横幅放在该商品默认变体目录中，使用清晰文件名，并通过相对 `assetKey` 引用。
 
+适合人体互动的商品必须把米兰模特图放在默认变体目录中。该媒体使用 `role: editorial-ai` 与 `aiConcept: true`，caption 固定为“品牌 AI 概念影像 · 米兰造型”，alt 明确“虚构成年米兰模特”及互动方式，并记录真实的 1120×1400 像素。
+
 ## 自动归类
 
 1. 比较用途：坐具、灯具、桌器等功能必须相近。

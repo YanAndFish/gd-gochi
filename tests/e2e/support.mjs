@@ -1,8 +1,8 @@
 import { expect, test as base } from "@playwright/test";
 
 /**
- * 为每个浏览器页面收集脚本异常与 console.error，并在用例结束时统一断言。
- * 普通 console.warn 不计入错误，避免浏览器自身提示干扰业务验收。
+ * 为每个浏览器页面收集脚本异常、console.error 与 console.warn，
+ * 并在用例结束时统一断言，确保 React 警告也不会被遗漏。
  */
 export const test = base.extend({
   page: async ({ page }, use) => {
@@ -13,10 +13,10 @@ export const test = base.extend({
       runtimeErrors.push(`pageerror: ${error.message}`);
     });
     page.on("console", (message) => {
-      if (message.type() === "error") {
+      if (message.type() === "error" || message.type() === "warning") {
         const location = message.location();
         runtimeErrors.push(
-          `console.error: ${message.text()}${location.url ? ` @ ${location.url}` : ""}`,
+          `console.${message.type()}: ${message.text()}${location.url ? ` @ ${location.url}` : ""}`,
         );
       }
     });

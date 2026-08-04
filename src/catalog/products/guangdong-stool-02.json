@@ -1,0 +1,501 @@
+{
+  "id": "guangdong-stool-02",
+  "slug": "guangdong-stool-02",
+  "legacySlugs": [],
+  "seriesId": "guangdong-stool-series",
+  "nameZh": "粤凳 02",
+  "nameEn": "GUANGDONG STOOL N°02",
+  "summary": "弧形通风靠背、一体扶手与宽阔坐面，共同构成一件可堆叠的岭南日常坐具。",
+  "publishedAt": "2026-07-30T00:00:00.000Z",
+  "defaultVariantId": "stool-02-light-blue",
+  "searchTerms": [
+    "粤凳",
+    "粤凳 02",
+    "广东扶手椅",
+    "高背扶手椅",
+    "可堆叠坐具",
+    "GUANGDONG STOOL",
+    "浅蓝",
+    "白",
+    "深蓝",
+    "黄",
+    "红",
+    "橙"
+  ],
+  "specifications": [
+    {
+      "label": "形态",
+      "value": "宽圆弧靠背与五道纵向开口"
+    },
+    {
+      "label": "结构",
+      "value": "一体扶手、三处坐面开孔与四足，可堆叠"
+    },
+    {
+      "label": "用途",
+      "value": "适用于坐用与空间陈列"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "通透的围合",
+      "body": "五道纵向开口沿弧形靠背展开，两侧扶手连续围合坐面，在倚靠与起身之间保留清晰支点。"
+    },
+    {
+      "title": "堆叠的日常秩序",
+      "body": "四足与扶手保持可嵌套的关系，让多件器物在使用与收纳之间自然切换。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "stool-02-light-blue",
+      "nameZh": "粤凳 02 · 浅蓝",
+      "nameEn": "GUANGDONG STOOL N°02 · LIGHT BLUE",
+      "shortName": "浅蓝",
+      "option": {
+        "type": "colour",
+        "value": "light-blue",
+        "label": "浅蓝",
+        "colorHex": "#60c8e5"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "明亮浅蓝让弧形靠背与通透开口显得轻盈，为熟悉的扶手轮廓带来清爽节奏。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/three-quarter.png",
+          "alt": "浅蓝粤凳 02 的四分之三侧影棚图",
+          "caption": "浅蓝 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/three-quarter.png",
+            "alt": "浅蓝粤凳 02 的四分之三侧影棚图",
+            "caption": "浅蓝 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/front.png",
+            "alt": "浅蓝粤凳 02 的正面影棚图",
+            "caption": "浅蓝 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/side.png",
+            "alt": "浅蓝粤凳 02 的侧面影棚图",
+            "caption": "浅蓝 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/structure-detail.png",
+            "alt": "浅蓝粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "浅蓝 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/editorial-ai.png",
+            "alt": "六色粤凳 02 在明亮室内堆叠陈列",
+            "caption": "品牌 AI 概念影像 · 六色堆叠陈列",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-light-blue/milano-standing-light-blue.png",
+            "alt": "虚构成年米兰模特与浅蓝粤凳 02 的造型展示",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-02-white",
+      "nameZh": "粤凳 02 · 白",
+      "nameEn": "GUANGDONG STOOL N°02 · WHITE",
+      "shortName": "白",
+      "option": {
+        "type": "colour",
+        "value": "white",
+        "label": "白",
+        "colorHex": "#e7e5e6"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "纯白弱化了器物的体量，让扶手、开口与四足结构在光线中保持安静清晰。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-white/three-quarter.png",
+          "alt": "白色粤凳 02 的四分之三侧影棚图",
+          "caption": "白 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-white/three-quarter.png",
+            "alt": "白色粤凳 02 的四分之三侧影棚图",
+            "caption": "白 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-white/front.png",
+            "alt": "白色粤凳 02 的正面影棚图",
+            "caption": "白 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-white/side.png",
+            "alt": "白色粤凳 02 的侧面影棚图",
+            "caption": "白 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-white/structure-detail.png",
+            "alt": "白色粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "白 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-02-deep-blue",
+      "nameZh": "粤凳 02 · 深蓝",
+      "nameEn": "GUANGDONG STOOL N°02 · DEEP BLUE",
+      "shortName": "深蓝",
+      "option": {
+        "type": "colour",
+        "value": "deep-blue",
+        "label": "深蓝",
+        "colorHex": "#0054d8"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "饱和深蓝强化连续扶手与弧形靠背的轮廓，让日常坐具呈现更沉静的视觉重心。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-deep-blue/three-quarter.png",
+          "alt": "深蓝粤凳 02 的四分之三侧影棚图",
+          "caption": "深蓝 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-deep-blue/three-quarter.png",
+            "alt": "深蓝粤凳 02 的四分之三侧影棚图",
+            "caption": "深蓝 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-deep-blue/front.png",
+            "alt": "深蓝粤凳 02 的正面影棚图",
+            "caption": "深蓝 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-deep-blue/side.png",
+            "alt": "深蓝粤凳 02 的侧面影棚图",
+            "caption": "深蓝 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-deep-blue/structure-detail.png",
+            "alt": "深蓝粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "深蓝 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-02-yellow",
+      "nameZh": "粤凳 02 · 黄",
+      "nameEn": "GUANGDONG STOOL N°02 · YELLOW",
+      "shortName": "黄",
+      "option": {
+        "type": "colour",
+        "value": "yellow",
+        "label": "黄",
+        "colorHex": "#c3db2f"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "高亮黄色以偏黄绿的鲜明色相突出靠背开口与可堆叠轮廓。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-yellow/three-quarter.png",
+          "alt": "黄色粤凳 02 的四分之三侧影棚图",
+          "caption": "黄 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-yellow/three-quarter.png",
+            "alt": "黄色粤凳 02 的四分之三侧影棚图",
+            "caption": "黄 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-yellow/front.png",
+            "alt": "黄色粤凳 02 的正面影棚图",
+            "caption": "黄 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-yellow/side.png",
+            "alt": "黄色粤凳 02 的侧面影棚图",
+            "caption": "黄 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-yellow/structure-detail.png",
+            "alt": "黄色粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "黄 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-02-red",
+      "nameZh": "粤凳 02 · 红",
+      "nameEn": "GUANGDONG STOOL N°02 · RED",
+      "shortName": "红",
+      "option": {
+        "type": "colour",
+        "value": "red",
+        "label": "红",
+        "colorHex": "#fb338e"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "高饱和红色保留样图偏玫红的明快色相，让连续扶手形成醒目的色彩线条。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-red/three-quarter.png",
+          "alt": "红色粤凳 02 的四分之三侧影棚图",
+          "caption": "红 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-red/three-quarter.png",
+            "alt": "红色粤凳 02 的四分之三侧影棚图",
+            "caption": "红 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-red/front.png",
+            "alt": "红色粤凳 02 的正面影棚图",
+            "caption": "红 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-red/side.png",
+            "alt": "红色粤凳 02 的侧面影棚图",
+            "caption": "红 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-red/structure-detail.png",
+            "alt": "红色粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "红 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "stool-02-orange",
+      "nameZh": "粤凳 02 · 橙",
+      "nameEn": "GUANGDONG STOOL N°02 · ORANGE",
+      "shortName": "橙",
+      "option": {
+        "type": "colour",
+        "value": "orange",
+        "label": "橙",
+        "colorHex": "#f97504"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "鲜橙色沿弧形靠背与扶手展开，为通透结构带来温暖而直接的视觉节奏。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-stool-02/stool-02-orange/three-quarter.png",
+          "alt": "橙色粤凳 02 的四分之三侧影棚图",
+          "caption": "橙 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-orange/three-quarter.png",
+            "alt": "橙色粤凳 02 的四分之三侧影棚图",
+            "caption": "橙 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-orange/front.png",
+            "alt": "橙色粤凳 02 的正面影棚图",
+            "caption": "橙 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-orange/side.png",
+            "alt": "橙色粤凳 02 的侧面影棚图",
+            "caption": "橙 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-stool-02/stool-02-orange/structure-detail.png",
+            "alt": "橙色粤凳 02 的五道靠背开口与三处坐面孔细节",
+            "caption": "橙 · 靠背与坐面结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}
