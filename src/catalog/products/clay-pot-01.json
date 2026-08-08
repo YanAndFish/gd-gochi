@@ -1,0 +1,140 @@
+{
+  "id": "clay-pot-01",
+  "slug": "clay-pot-01",
+  "legacySlugs": [],
+  "seriesId": "clay-pot-series",
+  "nameZh": "慢慢滚",
+  "nameEn": "SIMMER DOWN",
+  "summary": "浅腹圆身、平底轮廓、单侧短柄与深褐色圆钮煲盖，共同构成一件清晰克制的岭南日常炊器。",
+  "publishedAt": "2026-07-30T00:00:00.000Z",
+  "defaultVariantId": "clay-pot-01-sand-brown",
+  "searchTerms": [
+    "沙煲",
+    "砂煲",
+    "砂锅",
+    "单柄煲",
+    "平底浅煲",
+    "砂褐",
+    "煲点什么",
+    "慢慢滚",
+    "WHAT'S SIMMERING",
+    "SIMMER DOWN",
+    "CLAY POT",
+    "LINGNAN KITCHEN"
+  ],
+  "specifications": [
+    {
+      "label": "形态",
+      "value": "圆形浅腹煲身、平底轮廓与单侧短柄"
+    },
+    {
+      "label": "煲盖",
+      "value": "浅拱盖面、中央圆钮与可见气孔"
+    },
+    {
+      "label": "色彩",
+      "value": "暖砂色煲身与深褐色亮面盖顶"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "一柄一煲",
+      "body": "低矮煲身与单侧短柄形成明确方向，让开合、端取与上桌的动作保持直接。"
+    },
+    {
+      "title": "双色盖面",
+      "body": "暖砂色与深褐色在盖面相接，让熟悉的厨房轮廓以更安静的方式进入当代餐桌。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "clay-pot-01-sand-brown",
+      "nameZh": "慢慢滚 · 砂褐",
+      "nameEn": "SIMMER DOWN · SAND BROWN",
+      "shortName": "砂褐",
+      "option": {
+        "type": "colour",
+        "value": "sand-brown",
+        "label": "砂褐"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1880000,
+      "editionNote": "2026 常设系列",
+      "description": "暖砂色煲身与深褐色盖顶形成温和对比，保留单柄浅煲清晰、易辨的日常轮廓。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/three-quarter.png",
+          "alt": "砂褐色单柄平底浅煲的四分之三侧影棚图",
+          "caption": "砂褐 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/three-quarter.png",
+            "alt": "砂褐色单柄平底浅煲的四分之三侧影棚图",
+            "caption": "砂褐 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/front.png",
+            "alt": "砂褐色单柄平底浅煲的正面影棚图，单柄向右延伸",
+            "caption": "砂褐 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/side.png",
+            "alt": "砂褐色单柄平底浅煲的侧面影棚图，展示平底与单柄连接",
+            "caption": "砂褐 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/lid-detail.png",
+            "alt": "砂褐色单柄平底浅煲的圆钮煲盖、气孔与单柄连接细节",
+            "caption": "砂褐 · 煲盖与单柄结构细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/editorial-ai.png",
+            "alt": "砂褐色单柄平底浅煲陈列在明亮白色展馆式室内",
+            "caption": "品牌 AI 概念影像 · 白色展馆陈列",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/milano-ai.png",
+            "alt": "虚构成年米兰模特在白色展馆石台旁以布巾轻触砂褐色单柄平底浅煲短柄",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "clay-pot-series",
+  "slug": "clay-pot",
+  "nameZh": "煲点什么",
+  "nameEn": "WHAT'S SIMMERING",
+  "eyebrow": "LINGNAN KITCHEN FORMS",
+  "description": "从岭南厨房常见的带盖沙煲出发，以浅腹、短柄与双色盖面整理日常炊煮和上桌之间的器物经验。",
+  "heroMedia": {
+    "assetKey": "assets/catalog/clay-pot-01/clay-pot-01-sand-brown/series-banner.png",
+    "alt": "砂褐色单柄平底浅煲在明亮白色展馆式室内中的横幅陈列",
+    "caption": "品牌 AI 概念影像 · 煲点什么白色展馆陈列",
+    "role": "installation",
+    "aiConcept": true,
+    "width": 2048,
+    "height": 1152
+  },
+  "sortOrder": 20
+}
