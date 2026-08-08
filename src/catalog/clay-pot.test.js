@@ -43,8 +43,8 @@ describe("慢慢滚目录契约", () => {
       defaultVariantId: "clay-pot-01-sand-brown",
       nameZh: "慢慢滚",
       nameEn: "SIMMER DOWN",
-      minPriceCents: 1_880_000,
-      maxPriceCents: 1_880_000,
+      minPriceCents: 1_280_000,
+      maxPriceCents: 1_280_000,
     });
     expect(variants).toHaveLength(1);
     expect(variants[0]).toBe(variant);
@@ -54,7 +54,7 @@ describe("慢慢滚目录契约", () => {
       nameEn: "SIMMER DOWN · SAND BROWN",
       productClass: "standard",
       saleStatus: "active",
-      priceCents: 1_880_000,
+      priceCents: 1_280_000,
       purchasePolicy: {
         requiredTier: "edition",
         ineligiblePresentation: "membership_required",
@@ -62,7 +62,7 @@ describe("慢慢滚目录契约", () => {
         lifetimeLimit: null,
       },
     });
-    expect(formatCurrency(variant.priceCents)).toBe("¥18,800");
+    expect(formatCurrency(variant.priceCents)).toBe("¥12,800");
     expect(TIER_LABELS[variant.purchasePolicy.requiredTier].en).toBe("EDITION");
   });
 

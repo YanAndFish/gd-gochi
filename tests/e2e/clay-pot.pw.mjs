@@ -107,7 +107,7 @@ test.describe("慢慢滚目录与交易", () => {
     ).toBeVisible();
   });
 
-  test("EDITION 会员可购买四件并生成 ¥75,200 订单快照", async ({
+  test("EDITION 会员可购买四件并生成 ¥51,200 订单快照", async ({
     page,
   }) => {
     await gotoRoute(page, "membership/checkout");
@@ -145,13 +145,13 @@ test.describe("慢慢滚目录与交易", () => {
       page.getByRole("heading", { name: "慢慢滚 · 砂褐", level: 3 }),
     ).toBeVisible();
     await expect(page.locator(".checkout-products")).toContainText(
-      "4 × ¥18,800",
+      "4 × ¥12,800",
     );
 
     await page.getByRole("button", { name: "确认订单" }).click();
     await page.getByRole("button", { name: "确认礼宾配送" }).click();
     const payButton = page.getByRole("button", {
-      name: "虚拟支付 ¥75,200",
+      name: "虚拟支付 ¥51,200",
     });
     await expect(payButton).toBeEnabled();
     await payButton.click();
@@ -161,8 +161,8 @@ test.describe("慢慢滚目录与交易", () => {
     });
     const orderRecord = page.locator(".order-record");
     await expect(orderRecord).toContainText("慢慢滚 · 砂褐");
-    await expect(orderRecord).toContainText("4 × ¥18,800");
-    await expect(orderRecord).toContainText("¥75,200");
+    await expect(orderRecord).toContainText("4 × ¥12,800");
+    await expect(orderRecord).toContainText("¥51,200");
   });
 });
 

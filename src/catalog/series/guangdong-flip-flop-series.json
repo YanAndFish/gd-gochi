@@ -1,0 +1,18 @@
+{
+  "id": "guangdong-flip-flop-series",
+  "slug": "guangdong-flip-flop",
+  "nameZh": "粤拖系列",
+  "nameEn": "GUANGDONG FLIP-FLOP SERIES",
+  "eyebrow": "LINGNAN EVERYDAY FOOTWEAR",
+  "description": "从岭南日常履物出发，以平直鞋床、人字形宽带与鲜明配色重新整理熟悉的穿着经验。",
+  "heroMedia": {
+    "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/series-banner.png",
+    "alt": "蓝白、绿白、朱白与墨黑四款平底人字拖在明亮白色展馆台面形成横向陈列",
+    "caption": "品牌 AI 概念影像 · 踢踢拖拖四色展馆陈列",
+    "role": "installation",
+    "aiConcept": true,
+    "width": 2048,
+    "height": 1152
+  },
+  "sortOrder": 30
+}

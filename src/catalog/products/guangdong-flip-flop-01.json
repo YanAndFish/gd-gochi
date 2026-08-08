@@ -1,0 +1,357 @@
+{
+  "id": "guangdong-flip-flop-01",
+  "slug": "guangdong-flip-flop-01",
+  "legacySlugs": [],
+  "seriesId": "guangdong-flip-flop-series",
+  "nameZh": "踢踢拖拖",
+  "nameEn": "KICKING ABOUT",
+  "summary": "平直圆头鞋床、三点连接人字形宽带与同色外底，构成一双熟悉而清晰的岭南日常履物。",
+  "publishedAt": "2026-08-08T00:00:00.000Z",
+  "defaultVariantId": "flip-flop-blue-white",
+  "searchTerms": [
+    "踢踢拖拖",
+    "粤拖",
+    "人字拖",
+    "橡胶人字拖",
+    "老式橡胶人字拖",
+    "平底人字拖",
+    "KICKING ABOUT",
+    "GUANGDONG FLIP-FLOP",
+    "蓝白",
+    "绿白",
+    "朱白",
+    "墨黑"
+  ],
+  "specifications": [
+    {
+      "label": "形态",
+      "value": "平直圆头鞋床与低拱人字形宽带"
+    },
+    {
+      "label": "结构",
+      "value": "前端趾柱与两侧锚点形成三点连接"
+    },
+    {
+      "label": "配色",
+      "value": "蓝白、绿白、朱白与通体墨黑"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "脚下的日常轮廓",
+      "body": "踢踢拖拖保留老式人字拖直接的穿着方式，以四种清晰配色重新进入当代生活。"
+    },
+    {
+      "title": "三点相连",
+      "body": "人字形宽带以趾柱与两侧锚点连接平直鞋床，鞋带、鞋床与外底的纹理在近看时保持清晰层次。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "flip-flop-blue-white",
+      "nameZh": "踢踢拖拖 · 蓝白",
+      "nameEn": "KICKING ABOUT · BLUE / WHITE",
+      "shortName": "蓝白",
+      "option": {
+        "type": "colour",
+        "value": "blue-white",
+        "label": "蓝白",
+        "colorHex": "#1f4a9b"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 680000,
+      "editionNote": "2026 常设系列",
+      "description": "冷白鞋床与深蓝鞋带、外底形成清晰分层，保留老式人字拖直接利落的日常轮廓。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/three-quarter.png",
+          "alt": "蓝白配色平底人字拖的四分之三侧影棚图",
+          "caption": "蓝白 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/three-quarter.png",
+            "alt": "蓝白配色平底人字拖的四分之三侧影棚图",
+            "caption": "蓝白 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/front.png",
+            "alt": "蓝白配色平底人字拖的正面俯视影棚图，展示圆头鞋床与三点式人字鞋带",
+            "caption": "蓝白 · 正面俯视结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/side.png",
+            "alt": "蓝白配色平底人字拖的侧面影棚图，展示平直薄底与鞋带插柱",
+            "caption": "蓝白 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/structure-detail.png",
+            "alt": "蓝白配色平底人字拖的鞋带压纹、鞋床细纹与纵向底纹结构细节",
+            "caption": "蓝白 · 鞋带与底纹细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/editorial-ai.png",
+            "alt": "蓝白、绿白、朱白与墨黑四款平底人字拖在明亮白色展馆地面错落陈列",
+            "caption": "品牌 AI 概念影像 · 四色错落陈列",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-blue-white/milano-walking-blue-white.png",
+            "alt": "虚构成年米兰模特身着中性色当代造型，在白色展馆中穿蓝白平底人字拖自然迈步，双脚鞋带与鞋床清晰可见",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "flip-flop-green-white",
+      "nameZh": "踢踢拖拖 · 绿白",
+      "nameEn": "KICKING ABOUT · GREEN / WHITE",
+      "shortName": "绿白",
+      "option": {
+        "type": "colour",
+        "value": "green-white",
+        "label": "绿白",
+        "colorHex": "#15906b"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 680000,
+      "editionNote": "2026 常设系列",
+      "description": "冷白鞋床与饱和绿鞋带、外底相接，让熟悉的平底轮廓显得明亮而有生气。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-green-white/three-quarter.png",
+          "alt": "绿白配色平底人字拖的四分之三侧影棚图",
+          "caption": "绿白 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-green-white/three-quarter.png",
+            "alt": "绿白配色平底人字拖的四分之三侧影棚图",
+            "caption": "绿白 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-green-white/front.png",
+            "alt": "绿白配色平底人字拖的正面俯视影棚图，展示圆头鞋床与三点式人字鞋带",
+            "caption": "绿白 · 正面俯视结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-green-white/side.png",
+            "alt": "绿白配色平底人字拖的侧面影棚图，展示平直薄底与鞋带插柱",
+            "caption": "绿白 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-green-white/structure-detail.png",
+            "alt": "绿白配色平底人字拖的鞋带压纹、鞋床细纹与纵向底纹结构细节",
+            "caption": "绿白 · 鞋带与底纹细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "flip-flop-red-white",
+      "nameZh": "踢踢拖拖 · 朱白",
+      "nameEn": "KICKING ABOUT · ROUGE / WHITE",
+      "shortName": "朱白",
+      "option": {
+        "type": "colour",
+        "value": "red-white",
+        "label": "朱白",
+        "colorHex": "#df4b43"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 680000,
+      "editionNote": "2026 常设系列",
+      "description": "冷白鞋床与朱红鞋带、外底形成鲜明对照，让简洁的人字结构多一分轻快戏谑。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-red-white/three-quarter.png",
+          "alt": "朱白配色平底人字拖的四分之三侧影棚图",
+          "caption": "朱白 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-red-white/three-quarter.png",
+            "alt": "朱白配色平底人字拖的四分之三侧影棚图",
+            "caption": "朱白 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-red-white/front.png",
+            "alt": "朱白配色平底人字拖的正面俯视影棚图，展示圆头鞋床与三点式人字鞋带",
+            "caption": "朱白 · 正面俯视结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-red-white/side.png",
+            "alt": "朱白配色平底人字拖的侧面影棚图，展示平直薄底与鞋带插柱",
+            "caption": "朱白 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-red-white/structure-detail.png",
+            "alt": "朱白配色平底人字拖的鞋带压纹、鞋床细纹与纵向底纹结构细节",
+            "caption": "朱白 · 鞋带与底纹细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "flip-flop-black",
+      "nameZh": "踢踢拖拖 · 墨黑",
+      "nameEn": "KICKING ABOUT · MONO BLACK",
+      "shortName": "墨黑",
+      "option": {
+        "type": "colour",
+        "value": "black",
+        "label": "墨黑",
+        "colorHex": "#161616"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 680000,
+      "editionNote": "2026 常设系列",
+      "description": "鞋床、鞋带与外底统一为墨黑，让三点连接和连续纹理在同一色调中显出层次。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-black/three-quarter.png",
+          "alt": "墨黑配色平底人字拖的四分之三侧影棚图",
+          "caption": "墨黑 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-black/three-quarter.png",
+            "alt": "墨黑配色平底人字拖的四分之三侧影棚图",
+            "caption": "墨黑 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-black/front.png",
+            "alt": "墨黑配色平底人字拖的正面俯视影棚图，展示圆头鞋床与三点式人字鞋带",
+            "caption": "墨黑 · 正面俯视结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-black/side.png",
+            "alt": "墨黑配色平底人字拖的侧面影棚图，展示平直薄底与鞋带插柱",
+            "caption": "墨黑 · 侧面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/guangdong-flip-flop-01/flip-flop-black/structure-detail.png",
+            "alt": "墨黑配色平底人字拖的鞋带压纹、鞋床细纹与纵向底纹结构细节",
+            "caption": "墨黑 · 鞋带与底纹细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}
