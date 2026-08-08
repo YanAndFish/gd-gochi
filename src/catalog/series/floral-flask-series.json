@@ -1,0 +1,18 @@
+{
+  "id": "floral-flask-series",
+  "slug": "floral-flask",
+  "nameZh": "暖水有花样",
+  "nameEn": "WARM WATER IN BLOOM",
+  "eyebrow": "LINGNAN FLORAL FLASKS",
+  "description": "以高身暖水樽的提携轮廓为起点，让五种明快底色、花卉与蝶鸟图案在日常器物上相遇。",
+  "heroMedia": {
+    "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/series-banner.png",
+    "alt": "朱红、紫罗兰、水青、桃粉与暖黄五款花卉暖水樽在明亮白色展馆中横向陈列",
+    "caption": "品牌 AI 概念影像 · 暖水有花样五色展馆陈列",
+    "role": "installation",
+    "aiConcept": true,
+    "width": 2048,
+    "height": 1152
+  },
+  "sortOrder": 40
+}

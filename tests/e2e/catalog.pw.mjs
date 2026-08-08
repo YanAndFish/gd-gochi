@@ -1,6 +1,6 @@
 import { expect, gotoRoute, test } from "./support.mjs";
 
-/** 三个正式商品的 canonical 路由片段。 */
+/** 粤凳系列三个正式商品的 canonical 路由片段。 */
 const STOOL_ROUTE = "/products/guangdong-stool-01";
 const STOOL_02_ROUTE = "/products/guangdong-stool-02";
 const ARCHIVE_ROUTE = "/products/guangdong-stool-archive-01";
@@ -16,7 +16,7 @@ function getProductLink(page, route) {
 }
 
 test.describe("多商品目录与路由", () => {
-  test("首页新品、商品总览和系列页都自动陈列三个独立商品", async ({
+  test("首页新品、商品总览和系列页都自动陈列粤凳系列三个独立商品", async ({
     page,
   }) => {
     await gotoRoute(page, "");

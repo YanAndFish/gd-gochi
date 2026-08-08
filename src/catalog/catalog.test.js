@@ -16,10 +16,11 @@ import {
 } from "../catalog.js";
 
 describe("数据化商品目录", () => {
-  it("自动装载并深度冻结现有系列、商品和十五个稳定变体", () => {
-    expect(PRODUCT_SERIES).toHaveLength(3);
+  it("自动装载并深度冻结现有系列、商品和二十个稳定变体", () => {
+    expect(PRODUCT_SERIES).toHaveLength(4);
     expect(PRODUCTS.map((product) => product.id).sort()).toEqual([
       "clay-pot-01",
+      "floral-flask-01",
       "guangdong-flip-flop-01",
       "guangdong-stool-01",
       "guangdong-stool-02",
@@ -32,6 +33,11 @@ describe("数据化商品目录", () => {
       "flip-flop-blue-white",
       "flip-flop-green-white",
       "flip-flop-red-white",
+      "floral-flask-aqua",
+      "floral-flask-pink",
+      "floral-flask-red",
+      "floral-flask-violet",
+      "floral-flask-yellow",
       "stool-02-deep-blue",
       "stool-02-light-blue",
       "stool-02-orange",

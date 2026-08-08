@@ -1,0 +1,437 @@
+{
+  "id": "floral-flask-01",
+  "slug": "floral-flask-01",
+  "legacySlugs": [],
+  "seriesId": "floral-flask-series",
+  "nameZh": "花里壶哨",
+  "nameEn": "FLASKY BUSINESS",
+  "summary": "高身圆筒、圆肩短颈、杯盖与木色内塞，加上顶部提梁、纵向侧把和花卉蝶鸟图案，组成一件带着热闹表情的暖水樽。",
+  "publishedAt": "2026-08-08T00:00:00.000Z",
+  "defaultVariantId": "floral-flask-red",
+  "searchTerms": [
+    "花里壶哨",
+    "暖水有花样",
+    "暖水樽",
+    "暖水壶",
+    "提梁水樽",
+    "花卉暖水樽",
+    "牡丹",
+    "蝶鸟",
+    "FLASKY BUSINESS",
+    "WARM WATER IN BLOOM",
+    "FLORAL FLASK",
+    "朱红",
+    "紫罗兰",
+    "水青",
+    "桃粉",
+    "暖黄"
+  ],
+  "specifications": [
+    {
+      "label": "形态",
+      "value": "高身圆筒、圆肩短颈与竖向折面"
+    },
+    {
+      "label": "开合",
+      "value": "银色杯盖下可见木色内塞"
+    },
+    {
+      "label": "提携",
+      "value": "顶部细线提梁与纵向弧形侧把"
+    },
+    {
+      "label": "花面",
+      "value": "朱红、紫罗兰、水青、桃粉与暖黄五色花卉蝶鸟图案"
+    }
+  ],
+  "detailSections": [
+    {
+      "title": "花得有点声势",
+      "body": "牡丹、蝶鸟与明快底色沿高身筒体展开，让熟悉的暖水樽轮廓不必低调登场。"
+    },
+    {
+      "title": "一提一挽",
+      "body": "顶部提梁负责携带动作，侧把沿筒身纵向展开；杯盖与内塞则把开合层次留在银色圆肩之上。"
+    }
+  ],
+  "variants": [
+    {
+      "id": "floral-flask-red",
+      "nameZh": "花里壶哨 · 朱红",
+      "nameEn": "FLASKY BUSINESS · ROUGE",
+      "shortName": "朱红",
+      "option": {
+        "type": "colour",
+        "value": "red",
+        "label": "朱红",
+        "colorHex": "#b82032"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1580000,
+      "editionNote": "2026 常设系列",
+      "description": "朱红筒身衬出粉紫花卉与蝶鸟图案，和银色圆肩、杯盖及底圈形成鲜明对照。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/three-quarter.png",
+          "alt": "朱红花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+          "caption": "朱红 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/three-quarter.png",
+            "alt": "朱红花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+            "caption": "朱红 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/front.png",
+            "alt": "朱红花卉暖水樽的正面影棚图，展示圆肩短颈、竖向折面与正面花卉图案",
+            "caption": "朱红 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/side.png",
+            "alt": "朱红花卉暖水樽的侧面影棚图，展示顶部提梁和纵向弧形侧把",
+            "caption": "朱红 · 侧面提携结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/closure-detail.png",
+            "alt": "朱红花卉暖水樽的杯盖、木色内塞、银色圆肩与提梁连接细节",
+            "caption": "朱红 · 杯盖与内塞细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/editorial-ai.png",
+            "alt": "朱红、紫罗兰、水青、桃粉与暖黄五款花卉暖水樽在明亮白色展馆中错落陈列",
+            "caption": "品牌 AI 概念影像 · 五色暖水樽展馆陈列",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-red/milano-carry-red.png",
+            "alt": "虚构成年米兰模特身着当代中性色造型，以顶部提梁携带朱红花卉暖水樽，杯盖、侧把与筒身完整可见",
+            "caption": "品牌 AI 概念影像 · 米兰造型",
+            "role": "editorial-ai",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "floral-flask-violet",
+      "nameZh": "花里壶哨 · 紫罗兰",
+      "nameEn": "FLASKY BUSINESS · VIOLET",
+      "shortName": "紫罗兰",
+      "option": {
+        "type": "colour",
+        "value": "violet",
+        "label": "紫罗兰",
+        "colorHex": "#7770b2"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1580000,
+      "editionNote": "2026 常设系列",
+      "description": "紫罗兰筒身托起粉紫花卉与绿叶，让银色圆肩、杯盖和底圈显得更清亮。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/floral-flask-01/floral-flask-violet/three-quarter.png",
+          "alt": "紫罗兰花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+          "caption": "紫罗兰 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-violet/three-quarter.png",
+            "alt": "紫罗兰花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+            "caption": "紫罗兰 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-violet/front.png",
+            "alt": "紫罗兰花卉暖水樽的正面影棚图，展示圆肩短颈、竖向折面与正面花卉图案",
+            "caption": "紫罗兰 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-violet/side.png",
+            "alt": "紫罗兰花卉暖水樽的侧面影棚图，展示顶部提梁和纵向弧形侧把",
+            "caption": "紫罗兰 · 侧面提携结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-violet/closure-detail.png",
+            "alt": "紫罗兰花卉暖水樽的杯盖、木色内塞、银色圆肩与提梁连接细节",
+            "caption": "紫罗兰 · 杯盖与内塞细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "floral-flask-aqua",
+      "nameZh": "花里壶哨 · 水青",
+      "nameEn": "FLASKY BUSINESS · AQUA",
+      "shortName": "水青",
+      "option": {
+        "type": "colour",
+        "value": "aqua",
+        "label": "水青",
+        "colorHex": "#9fd8d7"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1580000,
+      "editionNote": "2026 常设系列",
+      "description": "水青筒身与粉紫花卉、绿叶相接，让高身轮廓显出轻盈明快的层次。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/floral-flask-01/floral-flask-aqua/three-quarter.png",
+          "alt": "水青花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+          "caption": "水青 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-aqua/three-quarter.png",
+            "alt": "水青花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+            "caption": "水青 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-aqua/front.png",
+            "alt": "水青花卉暖水樽的正面影棚图，展示圆肩短颈、竖向折面与正面花卉图案",
+            "caption": "水青 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-aqua/side.png",
+            "alt": "水青花卉暖水樽的侧面影棚图，展示顶部提梁和纵向弧形侧把",
+            "caption": "水青 · 侧面提携结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-aqua/closure-detail.png",
+            "alt": "水青花卉暖水樽的杯盖、木色内塞、银色圆肩与提梁连接细节",
+            "caption": "水青 · 杯盖与内塞细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "floral-flask-pink",
+      "nameZh": "花里壶哨 · 桃粉",
+      "nameEn": "FLASKY BUSINESS · BLUSH",
+      "shortName": "桃粉",
+      "option": {
+        "type": "colour",
+        "value": "pink",
+        "label": "桃粉",
+        "colorHex": "#e3a8be"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1580000,
+      "editionNote": "2026 常设系列",
+      "description": "桃粉筒身承接红粉花卉、绿叶与蝶鸟图案，让花面与器身形成柔和连续的色调。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/floral-flask-01/floral-flask-pink/three-quarter.png",
+          "alt": "桃粉花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+          "caption": "桃粉 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-pink/three-quarter.png",
+            "alt": "桃粉花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+            "caption": "桃粉 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-pink/front.png",
+            "alt": "桃粉花卉暖水樽的正面影棚图，展示圆肩短颈、竖向折面与正面花卉图案",
+            "caption": "桃粉 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-pink/side.png",
+            "alt": "桃粉花卉暖水樽的侧面影棚图，展示顶部提梁和纵向弧形侧把",
+            "caption": "桃粉 · 侧面提携结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-pink/closure-detail.png",
+            "alt": "桃粉花卉暖水樽的杯盖、木色内塞、银色圆肩与提梁连接细节",
+            "caption": "桃粉 · 杯盖与内塞细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    },
+    {
+      "id": "floral-flask-yellow",
+      "nameZh": "花里壶哨 · 暖黄",
+      "nameEn": "FLASKY BUSINESS · WARM YELLOW",
+      "shortName": "暖黄",
+      "option": {
+        "type": "colour",
+        "value": "yellow",
+        "label": "暖黄",
+        "colorHex": "#dfa83d"
+      },
+      "productClass": "standard",
+      "saleStatus": "active",
+      "priceCents": 1580000,
+      "editionNote": "2026 常设系列",
+      "description": "暖黄筒身托起粉红与橙黄花卉，和绿叶、蝶鸟图案一起构成明朗花面。",
+      "purchasePolicy": {
+        "requiredTier": "edition",
+        "ineligiblePresentation": "membership_required",
+        "maxPerOrder": 4,
+        "lifetimeLimit": null
+      },
+      "media": {
+        "hero": {
+          "assetKey": "assets/catalog/floral-flask-01/floral-flask-yellow/three-quarter.png",
+          "alt": "暖黄花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+          "caption": "暖黄 · 四分之三侧视角",
+          "role": "studio",
+          "aiConcept": true,
+          "width": 1120,
+          "height": 1400
+        },
+        "gallery": [
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-yellow/three-quarter.png",
+            "alt": "暖黄花卉暖水樽的四分之三侧影棚图，展示顶部提梁与纵向侧把",
+            "caption": "暖黄 · 四分之三侧视角",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-yellow/front.png",
+            "alt": "暖黄花卉暖水樽的正面影棚图，展示圆肩短颈、竖向折面与正面花卉图案",
+            "caption": "暖黄 · 正面结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-yellow/side.png",
+            "alt": "暖黄花卉暖水樽的侧面影棚图，展示顶部提梁和纵向弧形侧把",
+            "caption": "暖黄 · 侧面提携结构",
+            "role": "studio",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          },
+          {
+            "assetKey": "assets/catalog/floral-flask-01/floral-flask-yellow/closure-detail.png",
+            "alt": "暖黄花卉暖水樽的杯盖、木色内塞、银色圆肩与提梁连接细节",
+            "caption": "暖黄 · 杯盖与内塞细节",
+            "role": "detail",
+            "aiConcept": true,
+            "width": 1120,
+            "height": 1400
+          }
+        ]
+      }
+    }
+  ]
+}
