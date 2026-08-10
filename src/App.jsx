@@ -59,6 +59,9 @@ import {
   createIdempotencyKey,
   useCommerce,
 } from "./CommerceProvider.jsx";
+import { AiConceptLabel } from "./components/AiConceptLabel.jsx";
+import { PageMeta } from "./components/PageMeta.jsx";
+import { MaisonPage } from "./pages/MaisonPage.jsx";
 
 /** 全站支付方式。 */
 const PAYMENT_METHODS = Object.freeze([
@@ -191,45 +194,6 @@ function waitForPresentation(milliseconds) {
 }
 
 /**
- * 为生成式编辑场景提供统一且可见的顾客说明。
- * @param {{media: import("./catalog.js").CatalogMedia, className?: string}} props - 媒体与附加样式。
- * @returns {import("react").ReactElement | null} AI 概念影像标记。
- */
-function AiConceptLabel({ media, className = "" }) {
-  if (
-    !media?.aiConcept ||
-    (media.role !== "editorial-ai" && media.role !== "installation")
-  ) {
-    return null;
-  }
-  return (
-    <span className={`media-concept-label ${className}`.trim()}>
-      品牌 AI 概念影像
-    </span>
-  );
-}
-
-/**
- * 路由切换时回到页面顶部并更新页面标题。
- * @param {string} title - 当前页面标题。
- * @returns {null} 无可见节点。
- */
-function PageMeta({ title }) {
-  const location = useLocation();
-  useEffect(() => {
-    document.title = `${title} | LINGNAN EDITIONS`;
-  }, [title]);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-    const main = document.getElementById("page-content");
-    main?.setAttribute("tabindex", "-1");
-    main?.focus({ preventScroll: true });
-  }, [location.pathname]);
-  return null;
-}
-
-/**
  * 全站顶栏与页脚。
  * @param {{children: import("react").ReactNode}} props - 页面内容。
  * @returns {import("react").ReactElement} 网站框架。
@@ -241,6 +205,7 @@ function SiteLayout({ children }) {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const limitedVariant = getVariant(HOME_MERCHANDISING.hero.variantId);
+  const isMaison = location.pathname === "/maison";
 
   useEffect(() => {
     setMenuOpen(false);
@@ -276,11 +241,11 @@ function SiteLayout({ children }) {
   }, [searchQuery]);
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell ${isMaison ? "site-shell-maison" : ""}`.trim()}>
       <a className="skip-link" href="#page-content">
         跳至主要内容
       </a>
-      <header className="site-header">
+      <header className={`site-header ${isMaison ? "site-header-dark" : ""}`.trim()}>
         <div className="header-inner">
           <button
             className="icon-button mobile-only"
@@ -298,7 +263,7 @@ function SiteLayout({ children }) {
             >
               2026 限定
             </NavLink>
-            <NavLink to="/#maison">品牌故事</NavLink>
+            <NavLink to="/maison">品牌故事</NavLink>
           </nav>
           <Link className="wordmark" to="/" aria-label="岭南辑造首页">
             <img
@@ -402,6 +367,7 @@ function SiteLayout({ children }) {
         </div>
         <div className="footer-links">
           <Link to="/products">全部商品</Link>
+          <Link to="/maison">品牌故事</Link>
           <Link to="/membership">会员制度</Link>
           <Link to="/orders">订单档案</Link>
           <Link to="/bag">购物袋</Link>
@@ -640,6 +606,9 @@ function HomePage() {
             岭南辑造从地方经验中提取形制、色彩与工艺线索。
             我们以克制的设计与更慢的观看，让熟悉之物进入当代生活的语境。
           </p>
+          <Link className="text-link maison-story-link" to="/maison">
+            阅读品牌故事 <ArrowRight size={15} />
+          </Link>
         </div>
       </section>
 
@@ -1864,6 +1833,7 @@ export function App() {
     <SiteLayout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/maison" element={<MaisonPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:slug" element={<ProductPage />} />
         <Route path="/series/:slug" element={<SeriesPage />} />

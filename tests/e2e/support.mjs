@@ -53,7 +53,16 @@ export async function expectNoHorizontalOverflow(page) {
     await document.fonts?.ready;
     await Promise.all(
       [...document.images]
-        .filter((image) => !image.complete)
+        .filter((image) => {
+          if (image.complete) {
+            return false;
+          }
+          const bounds = image.getBoundingClientRect();
+          const nearViewport =
+            bounds.bottom >= -window.innerHeight &&
+            bounds.top <= window.innerHeight * 2;
+          return image.loading !== "lazy" || nearViewport;
+        })
         .map(
           (image) =>
             new Promise((resolve) => {
